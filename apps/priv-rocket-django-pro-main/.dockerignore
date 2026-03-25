@@ -1,0 +1,15 @@
+.git
+.gitignore
+__pycache__
+*.pyc
+*.pyo
+node_modules
+.env
+.env.*
+*.md
+LICENSE
+.vscode
+.idea
+*.log
+docker-compose*
+.dockerignore

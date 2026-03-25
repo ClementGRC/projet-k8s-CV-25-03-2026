@@ -1,0 +1,16 @@
+{
+  "status": "done",
+  "assets": {
+    "frontend-5573884ed22164519f7f.js": {
+      "name": "frontend-5573884ed22164519f7f.js",
+      "path": "/home/mominur/Desktop/Appseed/Private/priv-rocket-django-pro/frontend/static/frontend/frontend-5573884ed22164519f7f.js",
+      "publicPath": "static/frontend/frontend-5573884ed22164519f7f.js"
+    }
+  },
+  "chunks": {
+    "frontend": [
+      "frontend-5573884ed22164519f7f.js"
+    ]
+  },
+  "publicPath": "static/frontend/"
+}
