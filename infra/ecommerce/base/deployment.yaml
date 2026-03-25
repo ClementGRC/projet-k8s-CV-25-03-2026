@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-deployment-cv
+  labels:
+    app: ecommerce
+    tier: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ecommerce
+  template:
+    metadata:
+      labels:
+        app: ecommerce
+        tier: frontend
+    spec:
+      containers:
+        - name: ecommerce-stripe
+          image: ecommerce-stripe-cv:1.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5005
+          envFrom:
+            - configMapRef:
+                name: ecommerce-configmap-cv
+            - secretRef:
+                name: ecommerce-secret-cv
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "50m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"

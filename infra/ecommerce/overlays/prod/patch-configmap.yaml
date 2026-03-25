@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ecommerce-configmap-cv
+data:
+  DEBUG: "False"
+  FLASK_DEBUG: "False"
