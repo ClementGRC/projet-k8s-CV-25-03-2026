@@ -2,10 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: django-pro-deployment-cv
-  namespace: dev
+  namespace: prod
   labels:
     app: django-pro
-    env: dev
+    env: prod
     tier: frontend
 spec:
   replicas: 3
@@ -16,7 +16,7 @@ spec:
     metadata:
       labels:
         app: django-pro
-        env: dev
+        env: prod
         tier: frontend
     spec:
       containers:
@@ -42,16 +42,42 @@ apiVersion: v1
 kind: Service
 metadata:
   name: django-pro-service-cv
-  namespace: dev
+  namespace: prod
   labels:
     app: django-pro
-    env: dev
+    env: prod
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: django-pro
   ports:
     - port: 5005
       targetPort: 5005
       protocol: TCP
-      name: django-pro-np
+      name: django-pro-lb
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: django-pro-hpa-cv
+  namespace: prod
+  labels:
+    app: django-pro
+    env: prod
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: django-pro-deployment-cv
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60

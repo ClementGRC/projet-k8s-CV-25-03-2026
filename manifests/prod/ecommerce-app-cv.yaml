@@ -1,35 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: django-pro-deployment-cv
-  namespace: preprod
+  name: ecommerce-deployment-cv
+  namespace: prod
   labels:
-    app: django-pro
-    env: preprod
+    app: ecommerce
+    env: prod
     tier: frontend
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: django-pro
+      app: ecommerce
   template:
     metadata:
       labels:
-        app: django-pro
-        env: preprod
+        app: ecommerce
+        env: prod
         tier: frontend
     spec:
       containers:
-        - name: django-pro
-          image: django-pro-cv:1.0
+        - name: ecommerce-stripe
+          image: ecommerce-stripe-cv:1.0
           imagePullPolicy: Never
           ports:
             - containerPort: 5005
           envFrom:
             - configMapRef:
-                name: django-pro-configmap-cv
+                name: ecommerce-configmap-cv
             - secretRef:
-                name: django-pro-secret-cv
+                name: ecommerce-secret-cv
           resources:
             requests:
               memory: "128Mi"
@@ -41,34 +41,34 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: django-pro-service-cv
-  namespace: preprod
+  name: ecommerce-service-cv
+  namespace: prod
   labels:
-    app: django-pro
-    env: preprod
+    app: ecommerce
+    env: prod
 spec:
   type: LoadBalancer
   selector:
-    app: django-pro
+    app: ecommerce
   ports:
     - port: 5005
       targetPort: 5005
       protocol: TCP
-      name: django-pro-lb
+      name: ecommerce-lb
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: django-pro-hpa-cv
-  namespace: preprod
+  name: ecommerce-hpa-cv
+  namespace: prod
   labels:
-    app: django-pro
-    env: preprod
+    app: ecommerce
+    env: prod
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: django-pro-deployment-cv
+    name: ecommerce-deployment-cv
   minReplicas: 3
   maxReplicas: 10
   metrics:
