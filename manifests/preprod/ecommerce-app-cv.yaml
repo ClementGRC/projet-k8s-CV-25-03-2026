@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-deployment-cv
+  namespace: preprod
+  labels:
+    app: ecommerce
+    env: preprod
+    tier: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ecommerce
+  template:
+    metadata:
+      labels:
+        app: ecommerce
+        env: preprod
+        tier: frontend
+    spec:
+      containers:
+        - name: ecommerce-stripe
+          image: ecommerce-stripe-cv:1.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5005
+          envFrom:
+            - configMapRef:
+                name: ecommerce-configmap-cv
+            - secretRef:
+                name: ecommerce-secret-cv
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommerce-service-cv
+  namespace: preprod
+  labels:
+    app: ecommerce
+    env: preprod
+spec:
+  type: LoadBalancer
+  selector:
+    app: ecommerce
+  ports:
+    - port: 5005
+      targetPort: 5005
+      protocol: TCP
+      name: ecommerce-lb
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ecommerce-hpa-cv
+  namespace: preprod
+  labels:
+    app: ecommerce
+    env: preprod
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ecommerce-deployment-cv
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60

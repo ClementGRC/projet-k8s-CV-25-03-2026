@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-pro-deployment-cv
+  namespace: preprod
+  labels:
+    app: django-pro
+    env: preprod
+    tier: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: django-pro
+  template:
+    metadata:
+      labels:
+        app: django-pro
+        env: preprod
+        tier: frontend
+    spec:
+      containers:
+        - name: django-pro
+          image: django-pro-cv:1.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5005
+          envFrom:
+            - configMapRef:
+                name: django-pro-configmap-cv
+            - secretRef:
+                name: django-pro-secret-cv
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-pro-service-cv
+  namespace: preprod
+  labels:
+    app: django-pro
+    env: preprod
+spec:
+  type: LoadBalancer
+  selector:
+    app: django-pro
+  ports:
+    - port: 5005
+      targetPort: 5005
+      protocol: TCP
+      name: django-pro-lb
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: django-pro-hpa-cv
+  namespace: preprod
+  labels:
+    app: django-pro
+    env: preprod
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: django-pro-deployment-cv
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60

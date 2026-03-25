@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboard-deployment-cv
+  namespace: preprod
+  labels:
+    app: dashboard
+    env: preprod
+    tier: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dashboard
+  template:
+    metadata:
+      labels:
+        app: dashboard
+        env: preprod
+        tier: frontend
+    spec:
+      containers:
+        - name: dashboard
+          image: dashboard-cv:1.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5005
+          envFrom:
+            - configMapRef:
+                name: dashboard-configmap-cv
+            - secretRef:
+                name: dashboard-secret-cv
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard-service-cv
+  namespace: preprod
+  labels:
+    app: dashboard
+    env: preprod
+spec:
+  type: LoadBalancer
+  selector:
+    app: dashboard
+  ports:
+    - port: 5005
+      targetPort: 5005
+      protocol: TCP
+      name: dashboard-lb
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: dashboard-hpa-cv
+  namespace: preprod
+  labels:
+    app: dashboard
+    env: preprod
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: dashboard-deployment-cv
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60
