@@ -21,8 +21,8 @@ spec:
     spec:
       containers:
         - name: dashboard
-          image: dashboard-cv:1.0
-          imagePullPolicy: Never
+          image: clemgrc/dashboard-cv:1.0
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5005
           envFrom:

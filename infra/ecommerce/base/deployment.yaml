@@ -18,8 +18,8 @@ spec:
     spec:
       containers:
         - name: ecommerce-stripe
-          image: ecommerce-stripe-cv:1.0
-          imagePullPolicy: Never
+          image: clemgrc/ecommerce-stripe-cv:1.0
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5005
           envFrom:

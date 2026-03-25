@@ -21,8 +21,8 @@ spec:
     spec:
       containers:
         - name: django-pro
-          image: django-pro-cv:1.0
-          imagePullPolicy: Never
+          image: clemgrc/django-pro-cv:1.0
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5005
           envFrom:
