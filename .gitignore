@@ -1,0 +1,16 @@
+# Fichiers sensibles
+.env
+.env.*
+*.secret
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+*.log
