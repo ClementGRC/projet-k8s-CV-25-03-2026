@@ -4,7 +4,8 @@
 **Date** : 25/03/2026  
 **Équipe** : Clément GRECO & Vincent  
 **Convention de nommage** : `cv-25-03-2026`  
-**Repository** : [https://github.com/ClementGRC/projet-k8s-CV-25-03-2026](https://github.com/ClementGRC/projet-k8s-CV-25-03-2026)
+**Repository GitHub** : [https://github.com/ClementGRC/projet-k8s-CV-25-03-2026](https://github.com/ClementGRC/projet-k8s-CV-25-03-2026)  
+**Registry Docker Hub** : [https://hub.docker.com/u/clemgrc](https://hub.docker.com/u/clemgrc)
 
 ---
 
@@ -18,12 +19,18 @@
 6. [Étape 3 — Création des namespaces](#6-étape-3--création-des-namespaces)
 7. [Étape 4 — Analyse et optimisation des applications](#7-étape-4--analyse-et-optimisation-des-applications)
 8. [Étape 5 — Build des images Docker optimisées](#8-étape-5--build-des-images-docker-optimisées)
-9. [Étape 6 — Déploiement en environnement dev](#9-étape-6--déploiement-en-environnement-dev)
-10. [Étape 7 — Déploiement en environnement preprod](#10-étape-7--déploiement-en-environnement-preprod)
-11. [Étape 8 — Déploiement en environnement prod](#11-étape-8--déploiement-en-environnement-prod)
-12. [Gestion des secrets et sécurité](#12-gestion-des-secrets-et-sécurité)
-13. [Avantages et inconvénients des solutions choisies](#13-avantages-et-inconvénients-des-solutions-choisies)
-14. [Conclusion](#14-conclusion)
+9. [Étape 6 — Publication sur Docker Hub](#9-étape-6--publication-sur-docker-hub)
+10. [Étape 7 — Déploiement en environnement dev](#10-étape-7--déploiement-en-environnement-dev)
+11. [Étape 8 — Déploiement en environnement preprod](#11-étape-8--déploiement-en-environnement-preprod)
+12. [Étape 9 — Déploiement en environnement prod](#12-étape-9--déploiement-en-environnement-prod)
+13. [Étape 10 — Test de paiement Stripe](#13-étape-10--test-de-paiement-stripe)
+14. [Étape 11 — Rollout et Rollback](#14-étape-11--rollout-et-rollback)
+15. [Étape 12 — Infrastructure as Code avec Kustomize](#15-étape-12--infrastructure-as-code-avec-kustomize)
+16. [Étape 13 — Collecte des logs](#16-étape-13--collecte-des-logs)
+17. [Gestion des secrets et sécurité](#17-gestion-des-secrets-et-sécurité)
+18. [Avantages et inconvénients des solutions choisies](#18-avantages-et-inconvénients-des-solutions-choisies)
+19. [Problèmes rencontrés et solutions](#19-problèmes-rencontrés-et-solutions)
+20. [Conclusion](#20-conclusion)
 
 ---
 
@@ -39,12 +46,13 @@ Le client souhaite un POC basé sur Kubernetes. L'une des 3 applications doit ob
 - Applications les plus légères possible
 - 3 réplicas par application
 - Applications accessibles depuis l'extérieur
-- Images disponibles depuis un registry (ou en local via Minikube)
+- Images disponibles depuis un registry d'image (Docker Hub)
 - 3 environnements : dev, preprod, prod
 - Autoscaling (HPA) sur preprod et prod
 - Système de mise à jour (rollout) et de retour en arrière (rollback)
 - Tout déployé de façon "as code" via des manifests YAML
 - Repo Git avec commits réguliers et messages explicites
+- Infrastructure as code : un fichier par application
 
 ---
 
@@ -53,6 +61,7 @@ Le client souhaite un POC basé sur Kubernetes. L'une des 3 applications doit ob
 ```
                         ┌─────────────────────────────────────────────┐
                         │            Cluster Minikube                 │
+                        │         (1 node, 6 Go RAM, 2 CPUs)         │
                         │                                             │
                         │  ┌───────────┐ ┌───────────┐ ┌───────────┐ │
                         │  │ Namespace │ │ Namespace │ │ Namespace │ │
@@ -77,6 +86,8 @@ Le client souhaite un POC basé sur Kubernetes. L'une des 3 applications doit ob
                         │  └───────────┘ └───────────┘ └───────────┘ │
                         │                                             │
                         │  27 pods total (3 apps × 3 replicas × 3 envs)│
+                        │                                             │
+                        │  Images : Docker Hub (clemgrc/)             │
                         └─────────────────────────────────────────────┘
 ```
 
@@ -94,19 +105,19 @@ Le client souhaite un POC basé sur Kubernetes. L'une des 3 applications doit ob
 
 ### 3.1 Orchestrateur : Minikube
 
-Minikube a été choisi comme solution locale pour ce POC car il permet de simuler un cluster Kubernetes complet sur un seul nœud. Il est léger, facile à installer, et supporte tous les composants k8s nécessaires (Deployments, Services, HPA, Namespaces, Secrets, ConfigMaps).
+Minikube a été choisi comme solution locale pour ce POC car il permet de simuler un cluster Kubernetes complet sur un seul nœud. Il est léger, facile à installer, et supporte tous les composants k8s nécessaires.
 
-**Driver utilisé** : Docker. C'est le driver recommandé pour les environnements Linux virtualisés.
+**Driver utilisé** : Docker, recommandé pour les environnements Linux virtualisés.
 
 ### 3.2 Applications
 
 Les 3 applications proviennent des templates AppSeed fournis par le formateur :
 
-| Application | Framework | Port | Rôle | Image Docker |
+| Application | Framework | Port | Rôle | Image Docker Hub |
 |---|---|---|---|---|
-| Rocket Ecommerce | Django + Stripe | 5005 | E-commerce avec paiement | `ecommerce-stripe-cv:1.0` |
-| Rocket Django Pro | Django | 5005 | Application secondaire | `django-pro-cv:1.0` |
-| Soft UI Dashboard | Django | 5005 | Dashboard d'administration | `dashboard-cv:1.0` |
+| Rocket Ecommerce | Django + Stripe | 5005 | E-commerce avec paiement | `clemgrc/ecommerce-stripe-cv:1.0` |
+| Rocket Django Pro | Django | 5005 | Application secondaire | `clemgrc/django-pro-cv:1.0` |
+| Soft UI Dashboard | Django | 5005 | Dashboard d'administration | `clemgrc/dashboard-cv:1.0` |
 
 ### 3.3 Optimisation des images Docker
 
@@ -120,13 +131,13 @@ Le sujet exigeant des applications "les plus légères possible", nous avons app
 | `--no-cache-dir` pip | Pas de cache pip stocké dans l'image | Réduction de ~50 Mo par image |
 | Layers combinées | `RUN` multiples regroupés avec `&&` | Réduction du nombre de layers |
 
-**Résultats des optimisations :**
+**Résultats :**
 
-| Image | Taille optimisée | Taille estimée sans optimisation |
-|---|---|---|
-| `ecommerce-stripe-cv:1.0` | **256 Mo** | ~1.5 Go |
-| `django-pro-cv:1.0` | **428 Mo** | ~1.5 Go |
-| `dashboard-cv:1.0` | **284 Mo** | ~1.2 Go |
+| Image | Taille optimisée | Estimée sans optimisation | Réduction |
+|---|---|---|---|
+| `clemgrc/ecommerce-stripe-cv:1.0` | **256 Mo** | ~1.5 Go | **~83%** |
+| `clemgrc/django-pro-cv:1.0` | **428 Mo** | ~1.5 Go | **~71%** |
+| `clemgrc/dashboard-cv:1.0` | **284 Mo** | ~1.2 Go | **~76%** |
 
 ![Images Docker buildées avec tailles](screenshots/08-images-built-sizes.png)
 
@@ -134,62 +145,62 @@ Le sujet exigeant des applications "les plus légères possible", nous avons app
 
 | Environnement | Type de Service | Justification |
 |---|---|---|
-| Dev | NodePort | Simple, suffisant pour les tests locaux. Port aléatoire entre 30000-32767 |
-| Preprod | LoadBalancer | Simule la production. Équilibrage de charge entre les nodes |
-| Prod | LoadBalancer | Standard en production pour l'accès externe via IP dédiée |
+| Dev | NodePort | Simple, suffisant pour les tests locaux |
+| Preprod | LoadBalancer | Simule la production avec équilibrage de charge |
+| Prod | LoadBalancer | Standard en production pour l'accès externe |
 
-### 3.5 Gestion des secrets
+### 3.5 Registry : Docker Hub
 
-Les secrets (clés Stripe) sont gérés via des objets Kubernetes `Secret` avec le type `Opaque`. Les fichiers de secrets sont exclus du dépôt Git via `.gitignore` pour ne jamais exposer de données sensibles dans le code source.
+Les images sont hébergées sur Docker Hub sous le compte `clemgrc`, conformément à l'exigence du sujet. Les manifests Kubernetes référencent directement les images du registry avec `imagePullPolicy: IfNotPresent` (vérifie en local d'abord, pull depuis Docker Hub si absent).
+
+### 3.6 Infrastructure as Code : Kustomize
+
+Kustomize est intégré nativement dans kubectl. Il permet de définir une base commune de manifests et des overlays par environnement ne contenant que les différences, éliminant la duplication.
+
+### 3.7 Gestion des secrets
+
+Les secrets (clés Stripe) sont gérés via des objets Kubernetes `Secret` de type `Opaque`, exclus du dépôt Git via `.gitignore`.
 
 ---
 
 ## 4. Étape 1 — Initialisation du projet et Git
 
-### 4.1 Création de la structure du projet
-
-Le repo Git a été initialisé dès le début du projet pour assurer la traçabilité de chaque action.
+### 4.1 Création de la structure
 
 ```bash
 mkdir projet-k8s-CV-25-03-2026
 cd projet-k8s-CV-25-03-2026
 git init
+git config --global user.name "ClementGRC"
+git config --global user.email "greco.clement57@gmail.com"
 ```
 
-**Structure de dossiers créée :**
+**Structure finale du projet :**
 
 ```
 projet-k8s-CV-25-03-2026/
 ├── README.md
 ├── .gitignore
 ├── apps/
-│   ├── priv-rocket-ecommerce-main/     # App Stripe (obligatoire)
-│   ├── priv-rocket-django-pro-main/     # App Django
-│   └── priv-django-soft-ui-dashboard-pro-master/  # Dashboard
+│   ├── priv-rocket-ecommerce-main/
+│   ├── priv-rocket-django-pro-main/
+│   └── priv-django-soft-ui-dashboard-pro-master/
 ├── manifests/
 │   ├── namespaces.yaml
-│   ├── dev/        # Manifests environnement dev
-│   ├── preprod/    # Manifests environnement preprod
-│   └── prod/       # Manifests environnement prod
-├── infra/          # Infrastructure as code
-├── docs/           # Rapport et schémas
-└── logs/           # Historiques (shell, docker, k8s events)
-```
-
-### 4.2 Configuration Git et premier commit
-
-```bash
-git config --global user.name "ClementGRC"
-git config --global user.email "greco.clement57@gmail.com"
-git add .
-git commit -m "init: creation structure projet k8s - equipe CV"
+│   ├── dev/
+│   ├── preprod/
+│   └── prod/
+├── infra/
+│   ├── ecommerce/  (base + overlays Kustomize)
+│   ├── django-pro/ (base + overlays Kustomize)
+│   └── dashboard/  (base + overlays Kustomize)
+├── docs/
+└── logs/
 ```
 
 ![Premier commit réussi](screenshots/01-premier-commit.png)
 
-### 4.3 Push vers GitHub
-
-Le repo a été connecté à GitHub pour le versionning distant :
+### 4.2 Push vers GitHub
 
 ```bash
 git remote add origin https://github.com/ClementGRC/projet-k8s-CV-25-03-2026.git
@@ -203,40 +214,20 @@ git push -u origin main
 
 ## 5. Étape 2 — Installation et configuration de Minikube
 
-### 5.1 Vérification des prérequis
-
 ```bash
 minikube version   # v1.38.1
 docker --version   # Docker 29.3.0
-```
-
-### 5.2 Démarrage du cluster
-
-Le cluster a été démarré avec le driver Docker et une allocation mémoire adaptée à la VM :
-
-```bash
 minikube start --driver=docker --memory=6144 --cpus=2
-```
-
-**Note** : La mémoire a été augmentée à 6 Go (et la VM à 8 Go de RAM) pour supporter les 27 pods (3 apps × 3 réplicas × 3 environnements) + le système Kubernetes.
-
-![Minikube démarré avec node Ready](screenshots/02-minikube-start.png)
-
-### 5.3 Activation du metrics-server
-
-Le metrics-server est nécessaire pour le fonctionnement du HPA (autoscaling). Il collecte les métriques CPU et mémoire des pods :
-
-```bash
 minikube addons enable metrics-server
 ```
+
+La VM a été configurée à 8 Go de RAM avec 6 Go alloués à Minikube pour supporter les 27 pods.
+
+![Minikube démarré](screenshots/02-minikube-start.png)
 
 ---
 
 ## 6. Étape 3 — Création des namespaces
-
-Les namespaces permettent d'isoler les 3 environnements (dev, preprod, prod) au sein du même cluster. Chaque environnement a ses propres ressources, secrets et configurations.
-
-**Fichier `manifests/namespaces.yaml` :**
 
 ```yaml
 apiVersion: v1
@@ -261,195 +252,131 @@ metadata:
     env: prod
 ```
 
-```bash
-kubectl apply -f manifests/namespaces.yaml
-```
-
 ![Namespaces créés](screenshots/04-namespaces-created.png)
-
-Les labels `env` permettent de filtrer facilement les ressources par environnement : `kubectl get all -l env=dev`.
 
 ---
 
 ## 7. Étape 4 — Analyse et optimisation des applications
 
-### 7.1 Extraction des applications
+### 7.1 Analyse
 
-Les 3 applications fournies par le formateur ont été extraites dans le dossier `apps/` :
+Les 3 applications fournies contenaient chacune un Dockerfile et un `requirements.txt`. Toutes utilisent le port 5005 via Gunicorn.
 
-- `priv-rocket-ecommerce-main/` — Application e-commerce avec Stripe
-- `priv-rocket-django-pro-main/` — Application Django Pro
-- `priv-django-soft-ui-dashboard-pro-master/` — Dashboard Django
-
-Chaque application contenait déjà un Dockerfile et un `requirements.txt`.
-
-![Dockerfiles et requirements trouvés](screenshots/05-dockerfiles-found.png)
-
-### 7.2 Analyse des ports
-
-Les 3 applications utilisent toutes le port **5005** via Gunicorn :
-
+![Dockerfiles trouvés](screenshots/05-dockerfiles-found.png)
 ![Ports des applications](screenshots/06-ports-apps.png)
-
-### 7.3 Analyse des dépendances (exemple : ecommerce)
-
-L'application e-commerce utilise Django, Stripe, Celery, Redis, et d'autres dépendances Python :
-
 ![Requirements ecommerce](screenshots/07-requirements-ecommerce.png)
 
-### 7.4 Création des `.dockerignore`
+### 7.2 Dockerfiles optimisés
 
-Un `.dockerignore` a été ajouté à chaque application pour exclure les fichiers inutiles du build context :
-
-```
-.git
-.gitignore
-__pycache__
-*.pyc
-*.pyo
-node_modules
-.env
-.env.*
-*.md
-LICENSE
-.vscode
-.idea
-*.log
-docker-compose*
-.dockerignore
-```
-
-### 7.5 Réécriture des Dockerfiles optimisés
-
-**Ecommerce et Django Pro (multi-stage build) :**
+**Ecommerce et Django Pro — Multi-stage build :**
 
 ```dockerfile
-# ---- Stage 1 : Build des assets frontend ----
+# Stage 1 : Build frontend
 FROM node:18-slim AS frontend
-
 WORKDIR /app
 COPY package*.json ./
 RUN npm i
 COPY . .
 RUN npm run build
 
-# ---- Stage 2 : Image de production légère ----
+# Stage 2 : Image production
 FROM python:3.11-slim
-
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-
 WORKDIR /app
-
 COPY requirements.txt .
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
-
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 COPY . .
 COPY --from=frontend /app/static /app/static
-
 RUN python manage.py collectstatic --no-input && \
-    python manage.py makemigrations && \
-    python manage.py migrate
-
+    python manage.py makemigrations && python manage.py migrate
 EXPOSE 5005
 CMD ["gunicorn", "--config", "gunicorn-cfg.py", "core.wsgi"]
 ```
 
-**Dashboard (pas de Node.js, image simple) :**
+**Dashboard — Image simple :**
 
 ```dockerfile
 FROM python:3.10-slim
-
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-
 WORKDIR /app
-
 COPY requirements.txt .
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
-
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 COPY . .
-
 RUN python manage.py collectstatic --no-input && \
-    python manage.py makemigrations && \
-    python manage.py migrate
-
+    python manage.py makemigrations && python manage.py migrate
 EXPOSE 5005
 CMD ["gunicorn", "--config", "gunicorn-cfg.py", "core.wsgi"]
 ```
-
-**Justification du multi-stage build** : Les applications ecommerce et Django Pro nécessitent Node.js pour compiler les assets frontend (webpack). Avec un multi-stage build, le Stage 1 utilise `node:18-slim` pour le build, et le Stage 2 ne copie que les fichiers statiques compilés. Résultat : Node.js et npm ne sont pas présents dans l'image finale, ce qui réduit considérablement la taille.
 
 ---
 
 ## 8. Étape 5 — Build des images Docker optimisées
 
-### 8.1 Connexion au Docker daemon de Minikube
-
-Pour éviter l'utilisation d'un registry externe (Docker Hub), nous avons buildé les images directement dans le Docker daemon interne de Minikube :
-
 ```bash
 eval $(minikube docker-env)
-```
-
-Cette commande redirige le client Docker local vers le daemon Docker qui tourne à l'intérieur de Minikube. Les images buildées sont immédiatement disponibles pour Kubernetes sans push/pull.
-
-### 8.2 Build des 3 images
-
-```bash
-cd apps/
 docker build -t ecommerce-stripe-cv:1.0 priv-rocket-ecommerce-main/
 docker build -t django-pro-cv:1.0 priv-rocket-django-pro-main/
 docker build -t dashboard-cv:1.0 priv-django-soft-ui-dashboard-pro-master/
 ```
 
-![Build de l'app ecommerce réussi](screenshots/09-build-ecommerce-success.png)
+![Build ecommerce réussi](screenshots/09-build-ecommerce-success.png)
+![Tailles des images](screenshots/08-images-built-sizes.png)
 
-### 8.3 Vérification des tailles d'images
-
-```bash
-docker images | grep cv
-```
-
-![Tailles des 3 images optimisées](screenshots/08-images-built-sizes.png)
-
-**Résultat** : les 3 images totalisent ~968 Mo au lieu de ~4.2 Go estimés sans optimisation, soit une **réduction de ~77%**.
+**Total** : ~968 Mo au lieu de ~4.2 Go, soit une **réduction de ~77%**.
 
 ---
 
-## 9. Étape 6 — Déploiement en environnement dev
+## 9. Étape 6 — Publication sur Docker Hub
 
-### 9.1 Structure des manifests par application
+Le sujet exige que les images soient accessibles depuis un registry. Les 3 images ont été poussées sur Docker Hub.
 
-Chaque application est déployée avec un triplet de manifests :
+### 9.1 Tag et push
 
-- **ConfigMap** : variables d'environnement non sensibles (`DEBUG`, `FLASK_APP`, etc.)
-- **Secret** : données sensibles (clés Stripe)
-- **Deployment + Service** : configuration du déploiement et de l'exposition réseau
+```bash
+docker login -u clemgrc
 
-### 9.2 Exemple : manifest de l'application e-commerce
+docker tag ecommerce-stripe-cv:1.0 clemgrc/ecommerce-stripe-cv:1.0
+docker tag django-pro-cv:1.0 clemgrc/django-pro-cv:1.0
+docker tag dashboard-cv:1.0 clemgrc/dashboard-cv:1.0
 
-**ConfigMap** (`manifests/dev/ecommerce-configmap-cv.yaml`) :
-
-```yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: ecommerce-configmap-cv
-  namespace: dev
-  labels:
-    app: ecommerce
-    env: dev
-data:
-  DEBUG: "True"
-  FLASK_APP: "run.py"
-  FLASK_DEBUG: "True"
-  SERVER_ADDRESS: "http://localhost:5005/"
+docker push clemgrc/ecommerce-stripe-cv:1.0
+docker push clemgrc/django-pro-cv:1.0
+docker push clemgrc/dashboard-cv:1.0
 ```
 
-**Deployment + Service** (`manifests/dev/ecommerce-app-cv.yaml`) :
+### 9.2 Mise à jour des manifests
+
+Tous les manifests Kubernetes ont été mis à jour pour référencer les images du registry :
+
+```yaml
+# Avant
+image: ecommerce-stripe-cv:1.0
+imagePullPolicy: Never
+
+# Après
+image: clemgrc/ecommerce-stripe-cv:1.0
+imagePullPolicy: IfNotPresent
+```
+
+`IfNotPresent` : Kubernetes vérifie d'abord si l'image existe en local, sinon la télécharge depuis Docker Hub. C'est le comportement standard en production.
+
+### 9.3 Images disponibles sur Docker Hub
+
+Les 3 images sont accessibles publiquement sur : [https://hub.docker.com/u/clemgrc](https://hub.docker.com/u/clemgrc)
+
+| Image | URL Docker Hub |
+|---|---|
+| E-commerce Stripe | `clemgrc/ecommerce-stripe-cv:1.0` |
+| Django Pro | `clemgrc/django-pro-cv:1.0` |
+| Dashboard | `clemgrc/dashboard-cv:1.0` |
+
+---
+
+## 10. Étape 7 — Déploiement en environnement dev
+
+### Manifest exemple — Ecommerce
 
 ```yaml
 apiVersion: apps/v1
@@ -460,7 +387,6 @@ metadata:
   labels:
     app: ecommerce
     env: dev
-    tier: frontend
 spec:
   replicas: 3
   selector:
@@ -471,12 +397,11 @@ spec:
       labels:
         app: ecommerce
         env: dev
-        tier: frontend
     spec:
       containers:
         - name: ecommerce-stripe
-          image: ecommerce-stripe-cv:1.0
-          imagePullPolicy: Never
+          image: clemgrc/ecommerce-stripe-cv:1.0
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5005
           envFrom:
@@ -491,73 +416,41 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "500m"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: ecommerce-service-cv
-  namespace: dev
-  labels:
-    app: ecommerce
-    env: dev
-spec:
-  type: NodePort
-  selector:
-    app: ecommerce
-  ports:
-    - port: 5005
-      targetPort: 5005
-      protocol: TCP
-      name: ecommerce-np
 ```
 
-**Points importants :**
-
-- `imagePullPolicy: Never` : les images sont dans le Docker local de Minikube, pas besoin de registry
-- `envFrom` : injecte toutes les variables du ConfigMap et du Secret dans les conteneurs automatiquement
-- `resources.requests` : ressources minimales demandées au scheduler pour placer le pod
-- `resources.limits` : plafond que le pod ne peut pas dépasser
-- `replicas: 3` : conformément à l'exigence du sujet
-
-### 9.3 Déploiement et vérification
-
-```bash
-kubectl apply -f manifests/dev/
-kubectl get pods -n dev
-```
+### Résultat : 9 pods Running
 
 ![9 pods Running en dev](screenshots/10-9pods-dev-running.png)
 
-**Résultat** : 9 pods (3 apps × 3 réplicas), tous en état Running, 0 restarts.
-
-### 9.4 Test d'accès à l'application e-commerce
-
-L'application est accessible depuis le navigateur via port-forwarding :
+### Accès depuis le navigateur
 
 ```bash
 kubectl port-forward -n dev service/ecommerce-service-cv 5005:5005 --address 0.0.0.0
+kubectl port-forward -n dev service/django-pro-service-cv 5006:5005 --address 0.0.0.0
+kubectl port-forward -n dev service/dashboard-service-cv 5007:5005 --address 0.0.0.0
 ```
 
-![Application e-commerce accessible dans le navigateur](screenshots/11-app-ecommerce-navigateur.png)
+| App | URL d'accès |
+|---|---|
+| Ecommerce Stripe | `http://192.168.52.128:5005` |
+| Django Pro | `http://192.168.52.128:5006` |
+| Dashboard | `http://192.168.52.128:5007` |
 
-L'application Rocket Ecommerce est fonctionnelle et accessible depuis le PC hôte via l'IP de la VM.
+![App ecommerce dans le navigateur](screenshots/11-app-ecommerce-navigateur.png)
 
 ---
 
-## 10. Étape 7 — Déploiement en environnement preprod
+## 11. Étape 8 — Déploiement en environnement preprod
 
-### 10.1 Différences avec l'environnement dev
+### Différences avec dev
 
 | Paramètre | Dev | Preprod |
 |---|---|---|
-| `DEBUG` | `True` | `False` |
-| Type de Service | NodePort | LoadBalancer |
-| Autoscaling (HPA) | Non | Oui (min 3, max 10) |
-| Seuil CPU HPA | — | 50% |
+| DEBUG | True | **False** |
+| Service | NodePort | **LoadBalancer** |
+| HPA | Non | **Oui (min 3, max 10, CPU 50%)** |
 
-### 10.2 HorizontalPodAutoscaler (HPA)
-
-Le HPA est ajouté sur chaque application en preprod. Il surveille la consommation CPU et scale automatiquement le nombre de pods :
+### HPA manifest
 
 ```yaml
 apiVersion: autoscaling/v2
@@ -565,9 +458,6 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: ecommerce-hpa-cv
   namespace: preprod
-  labels:
-    app: ecommerce
-    env: preprod
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -587,30 +477,13 @@ spec:
       stabilizationWindowSeconds: 60
 ```
 
-**Explication** :
-- `minReplicas: 3` / `maxReplicas: 10` : le HPA maintient au minimum 3 pods et peut monter jusqu'à 10
-- `averageUtilization: 50` : quand la moyenne CPU des pods dépasse 50%, le HPA ajoute des pods
-- `stabilizationWindowSeconds: 60` : attend 60 secondes avant de scale down, pour éviter le "yo-yo" lors des pics de trafic
-
-### 10.3 Déploiement et vérification
-
-```bash
-kubectl apply -f manifests/preprod/
-kubectl get pods -n preprod
-kubectl get hpa -n preprod
-```
-
-![Preprod — 9 pods Running + 3 HPA actifs](screenshots/12-preprod-pods-hpa.png)
-
-**Résultat** : 9 pods Running en preprod, 3 HPA configurés avec target 50% CPU.
+![Preprod — pods + HPA](screenshots/12-preprod-pods-hpa.png)
 
 ---
 
-## 11. Étape 8 — Déploiement en environnement prod
+## 12. Étape 9 — Déploiement en environnement prod
 
-### 11.1 Stratégie
-
-L'environnement prod est identique à la preprod (LoadBalancer + HPA). Les manifests preprod ont été dupliqués et adaptés :
+Identique à la preprod. Manifests dupliqués et adaptés :
 
 ```bash
 cp manifests/preprod/*.yaml manifests/prod/
@@ -618,101 +491,230 @@ sed -i 's/preprod/prod/g' manifests/prod/*.yaml
 kubectl apply -f manifests/prod/
 ```
 
-### 11.2 Gestion des ressources
+### 27 pods Running
 
-Avec 27 pods déployés sur un seul nœud Minikube, le dimensionnement des ressources a été un enjeu important. Le CPU requests a été optimisé à 50m par pod pour tenir dans les 4 CPU alloués au cluster :
+![Tous les pods Running](screenshots/13-all-27-pods-running.png)
 
-![Allocation des ressources du node](screenshots/16-resource-allocation.png)
+### Dimensionnement des ressources
 
-### 11.3 Vérification finale — 27 pods Running
+- CPU requests : 50m/pod → 27 × 50m = 1350m sur 4000m disponibles
+- Memory requests : 128Mi/pod
+
+![Allocation des ressources](screenshots/16-resource-allocation.png)
+
+---
+
+## 13. Étape 10 — Test de paiement Stripe
+
+### Catalogue produits
+
+![Produits ecommerce](screenshots/17-ecommerce-produits.png)
+
+### Checkout Stripe
+
+Données de test : carte `4242 4242 4242 4242`, date future, CVC `123`.
+
+![Checkout Stripe](screenshots/19-stripe-checkout.png)
+
+### Paiement réussi
+
+![Payment Successful](screenshots/18-stripe-payment-success.png)
+
+### Vérification dashboard Stripe
+
+![Dashboard Stripe](screenshots/20-stripe-dashboard.png)
+
+Le paiement apparaît dans le dashboard Stripe, confirmant la communication entre l'app Kubernetes et l'API Stripe.
+
+---
+
+## 14. Étape 11 — Rollout et Rollback
+
+### Build de la v2
+
+Mise à jour de la dépendance Stripe (4.2.0 → 5.0.0) :
 
 ```bash
-kubectl get pods -A | grep -E "dev|preprod|prod"
+sed -i 's/stripe==4.2.0/stripe==5.0.0/' apps/priv-rocket-ecommerce-main/requirements.txt
+docker build -t ecommerce-stripe-cv:2.0 apps/priv-rocket-ecommerce-main/
 ```
 
-![Tous les pods Running sur les 3 environnements](screenshots/13-all-27-pods-running.png)
+![Build v2](screenshots/21-build-v2-success.png)
 
-**Résultat final** : 27 pods (3 apps × 3 réplicas × 3 environnements) tous en état Running.
+### Rollout v1.0 → v2.0
+
+```bash
+kubectl annotate deployment ecommerce-deployment-cv -n dev \
+  kubernetes.io/change-cause="v1.0 - version initiale" --overwrite
+kubectl set image deployment/ecommerce-deployment-cv \
+  ecommerce-stripe=ecommerce-stripe-cv:2.0 -n dev
+kubectl annotate deployment ecommerce-deployment-cv -n dev \
+  kubernetes.io/change-cause="v2.0 - mise a jour stripe 5.0.0" --overwrite
+```
+
+Kubernetes effectue un **rolling update** : les nouveaux pods v2 sont créés progressivement pendant que les pods v1 sont supprimés. Résultat : **zéro downtime**.
+
+### Rollback v2.0 → v1.0
+
+```bash
+kubectl rollout undo deployment ecommerce-deployment-cv -n dev --to-revision=3
+```
+
+### Preuve — Log complet (`logs/rollout-rollback.log`)
+
+```
+=== IMAGE AVANT ROLLOUT ===
+    Image:      ecommerce-stripe-cv:1.0
+
+=== IMAGE APRES ROLLOUT ===
+    Image:      ecommerce-stripe-cv:2.0
+
+=== IMAGE APRES ROLLBACK ===
+    Image:      ecommerce-stripe-cv:1.0
+
+=== HISTORIQUE FINAL ===
+REVISION  CHANGE-CAUSE
+4         v2.0 - mise a jour stripe 5.0.0
+5         v1.0 - version initiale ecommerce stripe
+```
+
+Le log prouve les 3 états : v1.0 → v2.0 → retour v1.0 avec zéro downtime.
 
 ---
 
-## 12. Gestion des secrets et sécurité
+## 15. Étape 12 — Infrastructure as Code avec Kustomize
 
-### 12.1 Secrets Kubernetes
+### Structure
 
-Les clés Stripe (secret key et publishable key) sont injectées via des objets `Secret` Kubernetes avec le type `Opaque`. Le champ `stringData` permet de les écrire en clair dans le manifest, et Kubernetes les encode automatiquement en base64.
+```
+infra/
+├── ecommerce/
+│   ├── base/                    # Manifests communs
+│   │   ├── kustomization.yaml
+│   │   ├── deployment.yaml
+│   │   ├── service.yaml
+│   │   └── configmap.yaml
+│   └── overlays/
+│       ├── dev/                 # NodePort, DEBUG=True
+│       ├── preprod/             # LoadBalancer, DEBUG=False, HPA
+│       └── prod/                # LoadBalancer, DEBUG=False, HPA
+├── django-pro/   (même structure)
+└── dashboard/    (même structure)
+```
 
-### 12.2 Protection du code source
+### Déploiement en une commande
 
-Lors du push initial sur GitHub, le système **GitHub Push Protection** a détecté une clé Stripe API dans un fichier `.env` et a bloqué le push :
+```bash
+kubectl apply -k infra/ecommerce/overlays/dev
+kubectl apply -k infra/ecommerce/overlays/preprod
+kubectl apply -k infra/ecommerce/overlays/prod
+```
 
-![GitHub Push Protection](screenshots/14-github-push-protection.png)
-
-Pour résoudre ce problème :
-
-1. Ajout d'un `.gitignore` excluant les fichiers `.env` et les manifests secrets (`*-secret-*.yaml`)
-2. Nettoyage de l'historique Git avec `git filter-branch` pour supprimer les secrets des anciens commits
-3. Push forcé pour réécrire l'historique distant
-
-![Push réussi après nettoyage](screenshots/15-push-force-success.png)
-
-**Leçon apprise** : ne jamais commiter de fichiers contenant des secrets dans Git, même dans un repo privé. Les secrets doivent être gérés via des mécanismes dédiés (Kubernetes Secrets, gestionnaires de secrets comme Infisical/Vault).
+Kustomize assemble automatiquement la base + les patches de l'overlay. Modifier le port de l'app ne nécessite qu'un changement dans la base, propagé à tous les environnements. C'est le principe DRY (Don't Repeat Yourself) appliqué à l'infrastructure.
 
 ---
 
-## 13. Avantages et inconvénients des solutions choisies
+## 16. Étape 13 — Collecte des logs
+
+| Fichier | Contenu |
+|---|---|
+| `history-projet-CV-25-03-2026.log` | Historique des commandes Linux |
+| `docker-logs-ecommerce-CV-25-03-2026.log` | Logs applicatifs ecommerce |
+| `docker-logs-django-pro-CV-25-03-2026.log` | Logs applicatifs Django Pro |
+| `docker-logs-dashboard-CV-25-03-2026.log` | Logs applicatifs Dashboard |
+| `k8s-events-dev-CV-25-03-2026.log` | Événements K8s namespace dev |
+| `k8s-events-preprod-CV-25-03-2026.log` | Événements K8s namespace preprod |
+| `k8s-events-prod-CV-25-03-2026.log` | Événements K8s namespace prod |
+| `etat-cluster-dev.log` | État des ressources dev |
+| `etat-cluster-preprod.log` | État des ressources preprod |
+| `etat-cluster-prod.log` | État des ressources prod |
+| `rollout-rollback.log` | Preuve rollout/rollback |
+
+---
+
+## 17. Gestion des secrets et sécurité
+
+### GitHub Push Protection
+
+GitHub a bloqué un push contenant une clé Stripe dans un fichier `.env` :
+
+![Push Protection](screenshots/14-github-push-protection.png)
+
+Actions correctives :
+1. `.gitignore` excluant `.env` et `*-secret-*.yaml`
+2. `git filter-branch` pour nettoyer l'historique
+3. Push forcé
+
+![Push réussi](screenshots/15-push-force-success.png)
+
+### Bonnes pratiques appliquées
+- Fichiers de secrets jamais versionnés dans Git
+- Clés Stripe en mode test (préfixe `sk_test_` / `pk_test_`)
+- Variables sensibles séparées du code via ConfigMap/Secret
+- Historique Git nettoyé après exposition accidentelle
+
+---
+
+## 18. Avantages et inconvénients
 
 ### Avantages
 
 | Solution | Avantage |
 |---|---|
-| Minikube | Simple à installer, simule un vrai cluster k8s, gratuit |
-| Docker local (eval minikube docker-env) | Pas besoin de registry externe, build rapide, images immédiatement disponibles |
-| Multi-stage build | Images 3 à 5 fois plus légères, pas de dépendances de build en production |
-| python:slim | Image de base ~6x plus petite que l'image full |
-| Namespaces | Isolation propre des environnements, filtrage par labels |
-| HPA | Scaling automatique, absorbe les pics de trafic sans intervention manuelle |
-| ConfigMap + Secret | Séparation claire entre config, secrets et code applicatif |
-| Infrastructure as code (YAML) | Tout est reproductible, versionné, déclaratif |
+| Minikube | Simple, simule un vrai cluster k8s, gratuit |
+| Docker Hub | Registry accessible publiquement, standard de l'industrie |
+| Multi-stage build | Images 3 à 5× plus légères |
+| Kustomize | Natif kubectl, élimine la duplication |
+| HPA | Scaling automatique sur pics de trafic |
+| ConfigMap + Secret | Séparation config / secrets / code |
 
 ### Inconvénients
 
 | Solution | Inconvénient |
 |---|---|
-| Minikube | Single node, pas de haute disponibilité, limité en ressources |
-| Docker local sans registry | Images non partagées entre machines, perdues si `minikube delete` |
-| python:slim | Certains packages Python nécessitent des dépendances système manquantes |
-| NodePort en dev | Port aléatoire, pas d'équilibrage de charge |
-| LoadBalancer sur Minikube | IP en `<pending>`, nécessite `minikube tunnel` ou port-forward |
-| Secrets en YAML | Encodage base64 ≠ chiffrement, stockés en clair dans etcd par défaut |
+| Minikube | Single node, pas de haute disponibilité |
+| Docker Hub (gratuit) | Limite de pulls, images publiques par défaut |
+| LoadBalancer Minikube | IP `<pending>`, nécessite port-forward |
+| Secrets K8s natifs | base64 ≠ chiffrement réel |
 
-### Alternatives envisageables
+### Alternatives
 
-| Aspect | Solution actuelle | Alternative possible |
+| Aspect | Actuel | Alternative |
 |---|---|---|
-| Cluster | Minikube (single node) | Kind, K3S, ou cloud managé (GKE, EKS, AKS) |
-| Registry | Docker local | Docker Hub, GitHub Container Registry, Harbor |
-| Templating | YAML dupliqués | Helm Charts ou Kustomize |
-| Secrets | Kubernetes Secrets | Infisical, HashiCorp Vault, Sealed Secrets |
-| CI/CD | Manuel | GitOps (ArgoCD, FluxCD) |
+| Cluster | Minikube | Kind, K3S, GKE, EKS, AKS |
+| Registry | Docker Hub | GitHub Container Registry, Harbor |
+| Templating | Kustomize | Helm Charts |
+| Secrets | K8s Secrets | Infisical, Vault |
+| CI/CD | Manuel | ArgoCD, FluxCD |
 
 ---
 
-## 14. Conclusion
+## 19. Problèmes rencontrés et solutions
 
-Ce projet nous a permis de mettre en pratique l'ensemble de la chaîne de déploiement Kubernetes :
+| Problème | Cause | Solution |
+|---|---|---|
+| GitHub Push Protection | Clé Stripe dans `.env` versionné | `.gitignore` + `git filter-branch` |
+| Noms K8s refusés | Majuscules dans `CV` | Convention `cv` minuscules (RFC 1123) |
+| Pods en Pending | RAM/CPU insuffisants | VM 8 Go, requests CPU 50m |
+| `npm: not found` | Node.js absent de python:slim | Multi-stage avec `node:18-slim` |
+| `stripe==4.3.0` inexistant | Version invalide | Changé en `stripe==5.0.0` |
+| Rollback échoue | Révision 1 expirée | Vérifié `rollout history` → bonne révision |
+| `*.log` dans .gitignore | Logs projet ignorés | Retiré `*.log` du `.gitignore` |
 
-- **Conteneurisation** : création et optimisation d'images Docker avec multi-stage builds
-- **Orchestration** : déploiement de 27 pods répartis sur 3 environnements avec gestion des réplicas
-- **Scaling** : mise en place du HPA pour l'autoscaling automatique en preprod et prod
-- **Sécurité** : gestion des secrets séparée du code source, protection GitHub Push Protection
-- **Infrastructure as code** : tous les déploiements sont déclaratifs et reproductibles via des manifests YAML versionnés dans Git
+---
 
-Le POC démontre qu'un cluster Kubernetes peut gérer efficacement plusieurs applications e-commerce conteneurisées avec mise à l'échelle automatique, tout en maintenant une séparation propre entre les environnements de développement, pré-production et production.
+## 20. Conclusion
 
-**Reste à réaliser** :
-- Tests de paiement Stripe de bout en bout
-- Rollout (mise à jour) et rollback (retour en arrière)
-- Infrastructure as code avec Helm ou Kustomize (Partie 2)
-- Gestionnaire de secrets Infisical (bonus)
-- Collecte des logs (historiques shell, docker logs, k8s events)
+Ce projet a mis en pratique l'ensemble de la chaîne de déploiement Kubernetes :
+
+- **Conteneurisation** : images Docker optimisées avec multi-stage builds, réduction de 77% en taille moyenne
+- **Registry** : images publiées sur Docker Hub (`clemgrc/`), accessibles publiquement
+- **Orchestration** : 27 pods sur 3 environnements avec 3 réplicas par application
+- **Scaling** : HPA en preprod et prod (min 3, max 10 pods, seuil CPU 50%)
+- **Paiement** : intégration Stripe validée de bout en bout
+- **Mise à jour** : rollout v1→v2 et rollback v2→v1 avec zéro downtime
+- **Infrastructure as code** : Kustomize avec base commune et overlays par environnement
+- **Sécurité** : secrets séparés du code, GitHub Push Protection, nettoyage d'historique
+- **Traçabilité** : repo Git avec commits réguliers, logs collectés
+
+Le POC démontre qu'un cluster Kubernetes peut gérer efficacement plusieurs applications e-commerce conteneurisées avec mise à l'échelle automatique, système de mise à jour/rollback, et séparation propre des environnements — le tout déployé de façon déclarative et reproductible.
