@@ -1,0 +1,26 @@
+NAME                                           READY   STATUS    RESTARTS   AGE
+pod/dashboard-deployment-cv-56c4cbc458-bh454   1/1     Running   0          61m
+pod/dashboard-deployment-cv-56c4cbc458-qq275   1/1     Running   0          61m
+pod/dashboard-deployment-cv-56c4cbc458-rvdf8   1/1     Running   0          61m
+pod/django-pro-deployment-cv-84cdf486c-jznct   1/1     Running   0          61m
+pod/django-pro-deployment-cv-84cdf486c-qdngx   1/1     Running   0          61m
+pod/django-pro-deployment-cv-84cdf486c-szq9n   1/1     Running   0          61m
+pod/ecommerce-deployment-cv-5f6bd57fcb-dw6hl   1/1     Running   0          7m10s
+pod/ecommerce-deployment-cv-5f6bd57fcb-hb4td   1/1     Running   0          7m18s
+pod/ecommerce-deployment-cv-5f6bd57fcb-lh8cz   1/1     Running   0          7m13s
+
+NAME                            TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+service/dashboard-service-cv    NodePort   10.100.59.117   <none>        5005:31977/TCP   86m
+service/django-pro-service-cv   NodePort   10.107.210.34   <none>        5005:30181/TCP   86m
+service/ecommerce-service-cv    NodePort   10.103.94.128   <none>        5005:31389/TCP   92m
+
+NAME                                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/dashboard-deployment-cv    3/3     3            3           61m
+deployment.apps/django-pro-deployment-cv   3/3     3            3           61m
+deployment.apps/ecommerce-deployment-cv    3/3     3            3           61m
+
+NAME                                                 DESIRED   CURRENT   READY   AGE
+replicaset.apps/dashboard-deployment-cv-56c4cbc458   3         3         3       61m
+replicaset.apps/django-pro-deployment-cv-84cdf486c   3         3         3       61m
+replicaset.apps/ecommerce-deployment-cv-5d95b8c56f   0         0         0       23m
+replicaset.apps/ecommerce-deployment-cv-5f6bd57fcb   3         3         3       61m

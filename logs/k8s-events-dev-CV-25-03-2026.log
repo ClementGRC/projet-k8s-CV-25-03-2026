@@ -1,0 +1,97 @@
+LAST SEEN   TYPE      REASON                   OBJECT                                          MESSAGE
+23m         Normal    SuccessfulCreate         replicaset/ecommerce-deployment-cv-5d95b8c56f   Created pod: ecommerce-deployment-cv-5d95b8c56f-mf4z9
+23m         Normal    ScalingReplicaSet        deployment/ecommerce-deployment-cv              Scaled up replica set ecommerce-deployment-cv-5d95b8c56f to 1
+23m         Normal    Scheduled                pod/ecommerce-deployment-cv-5d95b8c56f-mf4z9    Successfully assigned dev/ecommerce-deployment-cv-5d95b8c56f-mf4z9 to minikube
+23m         Normal    Pulled                   pod/ecommerce-deployment-cv-5d95b8c56f-mf4z9    Container image "ecommerce-stripe-cv:2.0" already present on machine
+23m         Normal    Created                  pod/ecommerce-deployment-cv-5d95b8c56f-mf4z9    Created container ecommerce-stripe
+23m         Normal    Started                  pod/ecommerce-deployment-cv-5d95b8c56f-mf4z9    Started container ecommerce-stripe
+23m         Normal    Killing                  pod/ecommerce-deployment-cv-5f6bd57fcb-8q5nl    Stopping container ecommerce-stripe
+23m         Normal    Scheduled                pod/ecommerce-deployment-cv-5d95b8c56f-hmzlp    Successfully assigned dev/ecommerce-deployment-cv-5d95b8c56f-hmzlp to minikube
+23m         Normal    SuccessfulDelete         replicaset/ecommerce-deployment-cv-5f6bd57fcb   Deleted pod: ecommerce-deployment-cv-5f6bd57fcb-8q5nl
+23m         Normal    SuccessfulCreate         replicaset/ecommerce-deployment-cv-5d95b8c56f   Created pod: ecommerce-deployment-cv-5d95b8c56f-hmzlp
+23m         Normal    Created                  pod/ecommerce-deployment-cv-5d95b8c56f-hmzlp    Created container ecommerce-stripe
+23m         Normal    Pulled                   pod/ecommerce-deployment-cv-5d95b8c56f-hmzlp    Container image "ecommerce-stripe-cv:2.0" already present on machine
+23m         Normal    Started                  pod/ecommerce-deployment-cv-5d95b8c56f-hmzlp    Started container ecommerce-stripe
+23m         Normal    Killing                  pod/ecommerce-deployment-cv-5f6bd57fcb-f9qhx    Stopping container ecommerce-stripe
+23m         Normal    SuccessfulDelete         replicaset/ecommerce-deployment-cv-5f6bd57fcb   Deleted pod: ecommerce-deployment-cv-5f6bd57fcb-f9qhx
+23m         Normal    SuccessfulCreate         replicaset/ecommerce-deployment-cv-5d95b8c56f   Created pod: ecommerce-deployment-cv-5d95b8c56f-9j5m6
+23m         Normal    Scheduled                pod/ecommerce-deployment-cv-5d95b8c56f-9j5m6    Successfully assigned dev/ecommerce-deployment-cv-5d95b8c56f-9j5m6 to minikube
+23m         Normal    Pulled                   pod/ecommerce-deployment-cv-5d95b8c56f-9j5m6    Container image "ecommerce-stripe-cv:2.0" already present on machine
+23m         Normal    SuccessfulDelete         replicaset/ecommerce-deployment-cv-5f6bd57fcb   Deleted pod: ecommerce-deployment-cv-5f6bd57fcb-pvbgp
+23m         Normal    Killing                  pod/ecommerce-deployment-cv-5f6bd57fcb-pvbgp    Stopping container ecommerce-stripe
+23m         Normal    Created                  pod/ecommerce-deployment-cv-5d95b8c56f-9j5m6    Created container ecommerce-stripe
+23m         Normal    Started                  pod/ecommerce-deployment-cv-5d95b8c56f-9j5m6    Started container ecommerce-stripe
+23m         Normal    Scheduled                pod/ecommerce-deployment-cv-5f6bd57fcb-5b5rm    Successfully assigned dev/ecommerce-deployment-cv-5f6bd57fcb-5b5rm to minikube
+23m         Normal    SuccessfulCreate         replicaset/ecommerce-deployment-cv-5f6bd57fcb   Created pod: ecommerce-deployment-cv-5f6bd57fcb-5b5rm
+23m         Normal    Pulled                   pod/ecommerce-deployment-cv-5f6bd57fcb-5b5rm    Container image "ecommerce-stripe-cv:1.0" already present on machine
+23m         Normal    Created                  pod/ecommerce-deployment-cv-5f6bd57fcb-5b5rm    Created container ecommerce-stripe
+23m         Normal    Started                  pod/ecommerce-deployment-cv-5f6bd57fcb-5b5rm    Started container ecommerce-stripe
+23m         Normal    SuccessfulDelete         replicaset/ecommerce-deployment-cv-5d95b8c56f   Deleted pod: ecommerce-deployment-cv-5d95b8c56f-9j5m6
+23m         Normal    Scheduled                pod/ecommerce-deployment-cv-5f6bd57fcb-tcq7t    Successfully assigned dev/ecommerce-deployment-cv-5f6bd57fcb-tcq7t to minikube
+23m         Normal    SuccessfulCreate         replicaset/ecommerce-deployment-cv-5f6bd57fcb   Created pod: ecommerce-deployment-cv-5f6bd57fcb-tcq7t
+23m         Normal    Killing                  pod/ecommerce-deployment-cv-5d95b8c56f-9j5m6    Stopping container ecommerce-stripe
+23m         Normal    Created                  pod/ecommerce-deployment-cv-5f6bd57fcb-tcq7t    Created container ecommerce-stripe
+23m         Normal    Pulled                   pod/ecommerce-deployment-cv-5f6bd57fcb-tcq7t    Container image "ecommerce-stripe-cv:1.0" already present on machine
+23m         Normal    Started                  pod/ecommerce-deployment-cv-5f6bd57fcb-tcq7t    Started container ecommerce-stripe
+22m         Normal    SuccessfulDelete         replicaset/ecommerce-deployment-cv-5d95b8c56f   Deleted pod: ecommerce-deployment-cv-5d95b8c56f-hmzlp
+22m         Normal    Scheduled                pod/ecommerce-deployment-cv-5f6bd57fcb-74bpc    Successfully assigned dev/ecommerce-deployment-cv-5f6bd57fcb-74bpc to minikube
+22m         Normal    SuccessfulCreate         replicaset/ecommerce-deployment-cv-5f6bd57fcb   Created pod: ecommerce-deployment-cv-5f6bd57fcb-74bpc
+22m         Normal    Killing                  pod/ecommerce-deployment-cv-5d95b8c56f-hmzlp    Stopping container ecommerce-stripe
+22m         Normal    Pulled                   pod/ecommerce-deployment-cv-5f6bd57fcb-74bpc    Container image "ecommerce-stripe-cv:1.0" already present on machine
+22m         Normal    Created                  pod/ecommerce-deployment-cv-5f6bd57fcb-74bpc    Created container ecommerce-stripe
+22m         Normal    Started                  pod/ecommerce-deployment-cv-5f6bd57fcb-74bpc    Started container ecommerce-stripe
+22m         Normal    Killing                  pod/ecommerce-deployment-cv-5d95b8c56f-mf4z9    Stopping container ecommerce-stripe
+22m         Normal    SuccessfulDelete         replicaset/ecommerce-deployment-cv-5d95b8c56f   Deleted pod: ecommerce-deployment-cv-5d95b8c56f-mf4z9
+9m35s       Normal    Scheduled                pod/ecommerce-deployment-cv-5d95b8c56f-jsb8n    Successfully assigned dev/ecommerce-deployment-cv-5d95b8c56f-jsb8n to minikube
+9m35s       Normal    ScalingReplicaSet        deployment/ecommerce-deployment-cv              Scaled up replica set ecommerce-deployment-cv-5d95b8c56f to 1 from 0
+9m35s       Normal    SuccessfulCreate         replicaset/ecommerce-deployment-cv-5d95b8c56f   Created pod: ecommerce-deployment-cv-5d95b8c56f-jsb8n
+9m32s       Normal    Pulled                   pod/ecommerce-deployment-cv-5d95b8c56f-jsb8n    Container image "ecommerce-stripe-cv:2.0" already present on machine
+9m31s       Normal    Created                  pod/ecommerce-deployment-cv-5d95b8c56f-jsb8n    Created container ecommerce-stripe
+9m30s       Normal    Started                  pod/ecommerce-deployment-cv-5d95b8c56f-jsb8n    Started container ecommerce-stripe
+9m29s       Normal    SuccessfulDelete         replicaset/ecommerce-deployment-cv-5f6bd57fcb   Deleted pod: ecommerce-deployment-cv-5f6bd57fcb-tcq7t
+9m29s       Normal    ScalingReplicaSet        deployment/ecommerce-deployment-cv              Scaled up replica set ecommerce-deployment-cv-5d95b8c56f to 2 from 1
+9m29s       Normal    SuccessfulCreate         replicaset/ecommerce-deployment-cv-5d95b8c56f   Created pod: ecommerce-deployment-cv-5d95b8c56f-z28mt
+9m29s       Normal    ScalingReplicaSet        deployment/ecommerce-deployment-cv              Scaled down replica set ecommerce-deployment-cv-5f6bd57fcb to 2 from 3
+9m28s       Normal    Killing                  pod/ecommerce-deployment-cv-5f6bd57fcb-tcq7t    Stopping container ecommerce-stripe
+9m28s       Normal    Scheduled                pod/ecommerce-deployment-cv-5d95b8c56f-z28mt    Successfully assigned dev/ecommerce-deployment-cv-5d95b8c56f-z28mt to minikube
+9m26s       Normal    Pulled                   pod/ecommerce-deployment-cv-5d95b8c56f-z28mt    Container image "ecommerce-stripe-cv:2.0" already present on machine
+9m25s       Normal    ScalingReplicaSet        deployment/ecommerce-deployment-cv              Scaled down replica set ecommerce-deployment-cv-5f6bd57fcb to 1 from 2
+9m25s       Normal    ScalingReplicaSet        deployment/ecommerce-deployment-cv              Scaled up replica set ecommerce-deployment-cv-5d95b8c56f to 3 from 2
+9m25s       Normal    Created                  pod/ecommerce-deployment-cv-5d95b8c56f-z28mt    Created container ecommerce-stripe
+9m25s       Normal    SuccessfulDelete         replicaset/ecommerce-deployment-cv-5f6bd57fcb   Deleted pod: ecommerce-deployment-cv-5f6bd57fcb-74bpc
+9m25s       Normal    Killing                  pod/ecommerce-deployment-cv-5f6bd57fcb-74bpc    Stopping container ecommerce-stripe
+9m25s       Normal    Started                  pod/ecommerce-deployment-cv-5d95b8c56f-z28mt    Started container ecommerce-stripe
+9m25s       Warning   FailedToUpdateEndpoint   endpoints/ecommerce-service-cv                  Failed to update endpoint dev/ecommerce-service-cv: Operation cannot be fulfilled on endpoints "ecommerce-service-cv": the object has been modified; please apply your changes to the latest version and try again
+9m24s       Normal    Scheduled                pod/ecommerce-deployment-cv-5d95b8c56f-h422k    Successfully assigned dev/ecommerce-deployment-cv-5d95b8c56f-h422k to minikube
+9m24s       Normal    SuccessfulCreate         replicaset/ecommerce-deployment-cv-5d95b8c56f   Created pod: ecommerce-deployment-cv-5d95b8c56f-h422k
+9m23s       Normal    ScalingReplicaSet        deployment/ecommerce-deployment-cv              Scaled down replica set ecommerce-deployment-cv-5f6bd57fcb to 0 from 1
+9m23s       Normal    Started                  pod/ecommerce-deployment-cv-5d95b8c56f-h422k    Started container ecommerce-stripe
+9m23s       Normal    Created                  pod/ecommerce-deployment-cv-5d95b8c56f-h422k    Created container ecommerce-stripe
+9m23s       Normal    Pulled                   pod/ecommerce-deployment-cv-5d95b8c56f-h422k    Container image "ecommerce-stripe-cv:2.0" already present on machine
+9m23s       Normal    SuccessfulDelete         replicaset/ecommerce-deployment-cv-5f6bd57fcb   Deleted pod: ecommerce-deployment-cv-5f6bd57fcb-5b5rm
+9m23s       Normal    Killing                  pod/ecommerce-deployment-cv-5f6bd57fcb-5b5rm    Stopping container ecommerce-stripe
+7m9s        Normal    SuccessfulCreate         replicaset/ecommerce-deployment-cv-5f6bd57fcb   Created pod: ecommerce-deployment-cv-5f6bd57fcb-hb4td
+7m9s        Normal    ScalingReplicaSet        deployment/ecommerce-deployment-cv              Scaled up replica set ecommerce-deployment-cv-5f6bd57fcb to 1 from 0
+7m9s        Normal    Scheduled                pod/ecommerce-deployment-cv-5f6bd57fcb-hb4td    Successfully assigned dev/ecommerce-deployment-cv-5f6bd57fcb-hb4td to minikube
+7m6s        Normal    Pulled                   pod/ecommerce-deployment-cv-5f6bd57fcb-hb4td    Container image "ecommerce-stripe-cv:1.0" already present on machine
+7m5s        Normal    Started                  pod/ecommerce-deployment-cv-5f6bd57fcb-hb4td    Started container ecommerce-stripe
+7m5s        Normal    Created                  pod/ecommerce-deployment-cv-5f6bd57fcb-hb4td    Created container ecommerce-stripe
+7m4s        Normal    Killing                  pod/ecommerce-deployment-cv-5d95b8c56f-jsb8n    Stopping container ecommerce-stripe
+7m4s        Normal    Scheduled                pod/ecommerce-deployment-cv-5f6bd57fcb-lh8cz    Successfully assigned dev/ecommerce-deployment-cv-5f6bd57fcb-lh8cz to minikube
+7m4s        Normal    SuccessfulDelete         replicaset/ecommerce-deployment-cv-5d95b8c56f   Deleted pod: ecommerce-deployment-cv-5d95b8c56f-jsb8n
+7m4s        Normal    SuccessfulCreate         replicaset/ecommerce-deployment-cv-5f6bd57fcb   Created pod: ecommerce-deployment-cv-5f6bd57fcb-lh8cz
+7m4s        Normal    ScalingReplicaSet        deployment/ecommerce-deployment-cv              Scaled up replica set ecommerce-deployment-cv-5f6bd57fcb to 2 from 1
+7m4s        Normal    ScalingReplicaSet        deployment/ecommerce-deployment-cv              Scaled down replica set ecommerce-deployment-cv-5d95b8c56f to 2 from 3
+7m3s        Normal    Created                  pod/ecommerce-deployment-cv-5f6bd57fcb-lh8cz    Created container ecommerce-stripe
+7m3s        Normal    Pulled                   pod/ecommerce-deployment-cv-5f6bd57fcb-lh8cz    Container image "ecommerce-stripe-cv:1.0" already present on machine
+7m2s        Normal    Started                  pod/ecommerce-deployment-cv-5f6bd57fcb-lh8cz    Started container ecommerce-stripe
+7m1s        Normal    Killing                  pod/ecommerce-deployment-cv-5d95b8c56f-z28mt    Stopping container ecommerce-stripe
+7m1s        Normal    SuccessfulDelete         replicaset/ecommerce-deployment-cv-5d95b8c56f   Deleted pod: ecommerce-deployment-cv-5d95b8c56f-z28mt
+7m          Normal    Created                  pod/ecommerce-deployment-cv-5f6bd57fcb-dw6hl    Created container ecommerce-stripe
+7m          Normal    Pulled                   pod/ecommerce-deployment-cv-5f6bd57fcb-dw6hl    Container image "ecommerce-stripe-cv:1.0" already present on machine
+7m          Normal    Scheduled                pod/ecommerce-deployment-cv-5f6bd57fcb-dw6hl    Successfully assigned dev/ecommerce-deployment-cv-5f6bd57fcb-dw6hl to minikube
+7m          Normal    SuccessfulCreate         replicaset/ecommerce-deployment-cv-5f6bd57fcb   Created pod: ecommerce-deployment-cv-5f6bd57fcb-dw6hl
+6m59s       Normal    Started                  pod/ecommerce-deployment-cv-5f6bd57fcb-dw6hl    Started container ecommerce-stripe
+6m58s       Normal    ScalingReplicaSet        deployment/ecommerce-deployment-cv              (combined from similar events): Scaled down replica set ecommerce-deployment-cv-5d95b8c56f to 0 from 1
+6m57s       Normal    Killing                  pod/ecommerce-deployment-cv-5d95b8c56f-h422k    Stopping container ecommerce-stripe
+6m57s       Normal    SuccessfulDelete         replicaset/ecommerce-deployment-cv-5d95b8c56f   Deleted pod: ecommerce-deployment-cv-5d95b8c56f-h422k

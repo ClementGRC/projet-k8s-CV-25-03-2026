@@ -1,0 +1,52 @@
+=== AVANT ROLLOUT ===
+deployment.apps/ecommerce-deployment-cv 
+REVISION  CHANGE-CAUSE
+2         v2.0 - mise a jour stripe 5.0.0
+3         v1.0 - version initiale ecommerce stripe
+
+
+=== IMAGE AVANT ROLLOUT ===
+    Image:      ecommerce-stripe-cv:1.0
+
+=== APRES ROLLOUT V2 ===
+deployment.apps/ecommerce-deployment-cv 
+REVISION  CHANGE-CAUSE
+3         v1.0 - version initiale ecommerce stripe
+4         v2.0 - mise a jour stripe 5.0.0
+
+
+=== IMAGE APRES ROLLOUT ===
+    Image:      ecommerce-stripe-cv:2.0
+
+=== PODS APRES ROLLOUT ===
+NAME                                       READY   STATUS    RESTARTS   AGE
+ecommerce-deployment-cv-5d95b8c56f-h422k   1/1     Running   0          17s
+ecommerce-deployment-cv-5d95b8c56f-jsb8n   1/1     Running   0          28s
+ecommerce-deployment-cv-5d95b8c56f-z28mt   1/1     Running   0          22s
+
+=== APRES ROLLBACK V1 ===
+deployment.apps/ecommerce-deployment-cv 
+REVISION  CHANGE-CAUSE
+3         v1.0 - version initiale ecommerce stripe
+4         v2.0 - mise a jour stripe 5.0.0
+
+
+=== IMAGE APRES ROLLBACK ===
+    Image:      ecommerce-stripe-cv:2.0
+
+=== PODS APRES ROLLBACK ===
+NAME                                       READY   STATUS    RESTARTS   AGE
+ecommerce-deployment-cv-5d95b8c56f-h422k   1/1     Running   0          30s
+ecommerce-deployment-cv-5d95b8c56f-jsb8n   1/1     Running   0          41s
+ecommerce-deployment-cv-5d95b8c56f-z28mt   1/1     Running   0          35s
+
+=== ROLLBACK CORRIGE ===
+=== IMAGE APRES ROLLBACK VERS REVISION 3 ===
+    Image:      ecommerce-stripe-cv:1.0
+
+=== HISTORIQUE FINAL ===
+deployment.apps/ecommerce-deployment-cv 
+REVISION  CHANGE-CAUSE
+4         v2.0 - mise a jour stripe 5.0.0
+5         v1.0 - version initiale ecommerce stripe
+

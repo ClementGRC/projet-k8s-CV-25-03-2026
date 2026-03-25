@@ -2,6 +2,7 @@
 .env
 .env.*
 *.secret
+*-secret-*.yaml
 
 # Python
 __pycache__/
@@ -13,5 +14,3 @@ node_modules/
 
 # OS
 .DS_Store
-*.log
-*-secret-*.yaml

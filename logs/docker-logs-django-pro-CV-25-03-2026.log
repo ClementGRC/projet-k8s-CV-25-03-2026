@@ -1,0 +1,50 @@
+  worker_int: <function WorkerInt.worker_int at 0x700cb6e954e0>
+  worker_abort: <function WorkerAbort.worker_abort at 0x700cb6e95620>
+  pre_exec: <function PreExec.pre_exec at 0x700cb6e95760>
+  pre_request: <function PreRequest.pre_request at 0x700cb6e958a0>
+  post_request: <function PostRequest.post_request at 0x700cb6e95940>
+  child_exit: <function ChildExit.child_exit at 0x700cb6e95a80>
+  worker_exit: <function WorkerExit.worker_exit at 0x700cb6e95bc0>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x700cb6e95d00>
+  on_exit: <function OnExit.on_exit at 0x700cb6e95e40>
+  ssl_context: <function NewSSLContext.ssl_context at 0x700cb6e96020>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: None
+  raw_paste_global_conf: []
+  strip_header_spaces: False
+[2026-03-25 10:31:45 +0000] [1] [INFO] Starting gunicorn 21.2.0
+[2026-03-25 10:31:45 +0000] [1] [DEBUG] Arbiter booted
+[2026-03-25 10:31:45 +0000] [1] [INFO] Listening at: http://0.0.0.0:5005 (1)
+[2026-03-25 10:31:45 +0000] [1] [INFO] Using worker: sync
+[2026-03-25 10:31:45 +0000] [7] [INFO] Booting worker with pid: 7
+[2026-03-25 10:31:45 +0000] [1] [DEBUG] 1 workers
+[2026-03-25 11:22:03 +0000] [7] [DEBUG] GET /
+127.0.0.1 - - [25/Mar/2026:11:22:04 +0000] "GET / HTTP/1.1" 200 195223 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:04 +0000] [7] [DEBUG] GET /static/dist/main.css
+127.0.0.1 - - [25/Mar/2026:11:22:04 +0000] "GET /static/dist/main.css HTTP/1.1" 200 72131 "http://192.168.52.128:5006/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:04 +0000] [7] [DEBUG] GET /static/dist/img/default-user.png
+127.0.0.1 - - [25/Mar/2026:11:22:04 +0000] "GET /static/dist/img/default-user.png HTTP/1.1" 200 36073 "http://192.168.52.128:5006/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:04 +0000] [7] [DEBUG] GET /static/dist/main.bundle.js
+127.0.0.1 - - [25/Mar/2026:11:22:04 +0000] "GET /static/dist/main.bundle.js HTTP/1.1" 200 741515 "http://192.168.52.128:5006/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:04 +0000] [7] [DEBUG] GET /static/debug_toolbar/js/toolbar.js
+127.0.0.1 - - [25/Mar/2026:11:22:04 +0000] "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404 "http://192.168.52.128:5006/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:04 +0000] [7] [DEBUG] GET /static/debug_toolbar/css/toolbar.css
+127.0.0.1 - - [25/Mar/2026:11:22:04 +0000] "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 12621 "http://192.168.52.128:5006/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:04 +0000] [7] [DEBUG] GET /static/debug_toolbar/js/toolbar.js
+127.0.0.1 - - [25/Mar/2026:11:22:04 +0000] "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 13404 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:04 +0000] [7] [DEBUG] GET /static/dist/main.bundle.js
+127.0.0.1 - - [25/Mar/2026:11:22:04 +0000] "GET /static/dist/main.bundle.js HTTP/1.1" 200 741515 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:04 +0000] [7] [DEBUG] GET /static/debug_toolbar/css/print.css
+127.0.0.1 - - [25/Mar/2026:11:22:04 +0000] "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43 "http://192.168.52.128:5006/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:04 +0000] [7] [DEBUG] GET /static/debug_toolbar/js/utils.js
+127.0.0.1 - - [25/Mar/2026:11:22:04 +0000] "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527 "http://192.168.52.128:5006/static/debug_toolbar/js/toolbar.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:05 +0000] [7] [DEBUG] GET /static/debug_toolbar/js/utils.js
+127.0.0.1 - - [25/Mar/2026:11:22:05 +0000] "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4527 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"

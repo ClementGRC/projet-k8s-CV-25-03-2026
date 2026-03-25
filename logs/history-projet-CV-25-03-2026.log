@@ -1,0 +1,599 @@
+    1  sudo apt install -y open-vm-tools open-vm-tools-desktop
+    2  sudo reboot
+    3  k get svc
+    4  kubectl port-forward --address 0.0.0.0 service/hello-minikube 7080:8080
+    5  kubectl create deployment balanced --image=kicbase/echo-server:1.0
+    6  kubectl expose deployment balanced --type=LoadBalancer --port=8080
+    7  minikube tunnel
+    8  kubectl get services balanced
+    9  # Activer l'addon ingress
+   10  minikube addons enable ingress
+   11  newgrp docker
+   12  minikube start
+   13  minikube service hello-minikube
+   14  sudo apt update && sudo apt upgrade -y
+   15  # Dépendances
+   16  sudo apt install -y ca-certificates curl gnupg
+   17  # Clé GPG Docker
+   18  sudo install -m 0755 -d /etc/apt/keyrings
+   19  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+   20  sudo chmod a+r /etc/apt/keyrings/docker.gpg
+   21  # Repo Docker
+   22  echo   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+   23    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" |   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+   24  # Installation
+   25  sudo apt update
+   26  sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+   27  # Ajouter ton user au groupe docker (pour ne pas utiliser sudo)
+   28  sudo usermod -aG docker $USER
+   29  newgrp docker
+   30  k get svc
+   31  kubectl create deployment hello-minikube --image=kicbase/echo-server:1.0
+   32  kubectl expose deployment hello-minikube --type=NodePort --port=8080
+   33  kubectl get services hello-minikube
+   34  [200~minikube service hello-minikube
+   35  minikube service hello-minikube
+   36  sudo usermod -aG docker $USER
+   37  newgrp docker
+   38  minikube ssh
+   39  minikube ip
+   40  # Créer un pod nginx
+   41  kubectl run nginx --image=nginx
+   42  # Vérifier
+   43  kubectl get pod
+   44  kubectl describe pod nginx
+   45  k get pod -o wide
+   46  minkube ssh
+   47  minikube ssh
+   48  # Créer le deployment
+   49  kubectl create deployment nginx-deployment --image=nginx
+   50  # Exposer
+   51  k expose deployment nginx-deployment --type=NodePort --port=80
+   52  # Vérifier
+   53  k get all
+   54  # Port forward
+   55  k port-forward --address 0.0.0.0 services/nginx-deployment 5000:80
+   56  ip a
+   57  k get pod -w
+   58  k port-forward --address 0.0.0.0 services/nginx-deployment 5000:80
+   59  k get pod -w
+   60  kubectl get services balanced
+   61  # Activer l'addon ingress
+   62  minikube addons enable ingress
+   63  Ssudo usermod -aG docker $USER
+   64  groups
+   65  sudo reboot
+   66  k port-forward --address 0.0.0.0 services/nginx-deployment 5000:80
+   67  k get p
+   68  k get pods
+   69  k get pod
+   70  kubectl run nginx --image=nginx
+   71  k get pod -o wide
+   72  curl 10.244.0.3
+   73  curl -I 10.244.0.3
+   74  minikube ssh
+   75  sudo usermod -aG docker $USER
+   76  newgrp docker
+   77  minikube addons enable ingress
+   78  minikube tunnel
+   79  docker run hello-world
+   80  curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+   81  sudo install minikube-linux-amd64 /usr/local/bin/minikube
+   82  rm minikube-linux-amd64
+   83  minikube version
+   84  # Autocomplétion minikube
+   85  echo 'source <(minikube completion bash)' >> ~/.bashrc
+   86  # Autocomplétion kubectl (très utile aussi)
+   87  echo 'source <(kubectl completion bash)' >> ~/.bashrc
+   88  echo 'alias k=kubectl' >> ~/.bashrc
+   89  echo 'complete -o default -F __start_kubectl k' >> ~/.bashrc
+   90  # Recharger
+   91  source ~/.bashrc
+   92  minikube start --listen-address=0.0.0.0 --memory=max --cpus=max --kubernetes-version=v1.35.0
+   93  minikube status
+   94  kubectl get nodes
+   95  sudo apt install -y openssh-server
+   96  sudo systemctl enable --now ssh
+   97  k get pod -o wide
+   98  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+   99  sudo install kubectl /usr/local/bin/kubectl
+  100  rm kubectl
+  101  source ~/.bashrc
+  102  k get pod -o wide
+  103  kubectl get nodes
+  104  minikube status
+  105  minikube ssh
+  106  k get pod -o wide
+  107  minikube ssh
+  108  k get pod -o wide
+  109  sudo apt install -y bash-completion
+  110  source /etc/bash_completion
+  111  source ~/.bashrc
+  112  k get 
+  113  k get pod -o wide
+  114  minkube i^p
+  115  minkube ip
+  116  minikube ip
+  117  k get svc
+  118  ip a
+  119  kubectl delete all --all
+  120  minikube start
+  121  kubectl delete all --all
+  122  # Créer le deployment (2 réplicas, nginx 1.14.2)
+  123  kubectl apply -f https://k8s.io/examples/application/deployment.yaml
+  124  # Vérifier
+  125  kubectl describe deployment nginx-deployment
+  126  kubectl get pods -l app=nginx
+  127  # Mettre à jour vers nginx 1.16.1
+  128  kubectl apply -f https://k8s.io/examples/application/deployment-update.yaml
+  129  kubectl get pods -l app=nginx
+  130  # Scaler à 4 réplicas
+  131  kubectl apply -f https://k8s.io/examples/application/deployment-scale.yaml
+  132  kubectl get pods -l app=nginx
+  133  # Supprimer
+  134  kubectl delete deployment nginx-deployment
+  135  # 1. Redis Leader (1 réplica)
+  136  kubectl apply -f https://k8s.io/examples/application/guestbook/redis-leader-deployment.yaml
+  137  kubectl apply -f https://k8s.io/examples/application/guestbook/redis-leader-service.yaml
+  138  # 2. Redis Followers (2 réplicas)
+  139  kubectl apply -f https://k8s.io/examples/application/guestbook/redis-follower-deployment.yaml
+  140  kubectl apply -f https://k8s.io/examples/application/guestbook/redis-follower-service.yaml
+  141  # 3. Frontend Guestbook (3 réplicas)
+  142  kubectl apply -f https://k8s.io/examples/application/guestbook/frontend-deployment.yaml
+  143  kubectl apply -f https://k8s.io/examples/application/guestbook/frontend-service.yaml
+  144  # Vérifier que tout tourne
+  145  kubectl get pods
+  146  kubectl get services
+  147  kubectl port-forward --address 0.0.0.0 svc/frontend 8080:80
+  148  # Scaler à 5 frontends
+  149  kubectl scale deployment frontend --replicas=5
+  150  kubectl get pods
+  151  # Redescendre à 2
+  152  kubectl scale deployment frontend --replicas=2
+  153  kubectl get pods
+  154  kubectl delete deployment -l app=redis
+  155  kubectl delete service -l app=redis
+  156  kubectl delete deployment frontend
+  157  kubectl delete service frontend
+  158  # Créer un deployment
+  159  kubectl create deployment nginx-demo --image=nginx:1.14.2 --replicas=3
+  160  # Rolling update
+  161  kubectl set image deployment/nginx-demo nginx=nginx:1.16.1
+  162  kubectl rollout status deployment/nginx-demo
+  163  # Voir l'historique
+  164  kubectl rollout history deployment/nginx-demo
+  165  # Rollback
+  166  kubectl rollout undo deployment/nginx-demo
+  167  kubectl get pods
+  168  # Scaler
+  169  kubectl scale deployment/nginx-demo --replicas=5
+  170  # Pause / Resume d'un rollout
+  171  kubectl rollout pause deployment/nginx-demo
+  172  kubectl set image deployment/nginx-demo nginx=nginx:1.25
+  173  kubectl rollout resume deployment/nginx-demo
+  174  # Nettoyage
+  175  kubectl delete deployment nginx-demo
+  176  ip a
+  177  # Vérifier que le deployment existe plus (on l'a supprimé)
+  178  kubectl get deployments
+  179  # Doit être vide — c'est normal, on a fait le cycle complet (create → update → scale → delete)
+  180  kubectl apply -f https://k8s.io/examples/application/guestbook/redis-leader-deployment.yaml
+  181  kubectl apply -f https://k8s.io/examples/application/guestbook/redis-leader-service.yaml
+  182  kubectl apply -f https://k8s.io/examples/application/guestbook/redis-follower-deployment.yaml
+  183  kubectl apply -f https://k8s.io/examples/application/guestbook/redis-follower-service.yaml
+  184  kubectl apply -f https://k8s.io/examples/application/guestbook/frontend-deployment.yaml
+  185  kubectl apply -f https://k8s.io/examples/application/guestbook/frontend-service.yaml
+  186  kubectl get pods -w
+  187  # Créer
+  188  kubectl create deployment nginx-demo --image=nginx:1.14.2 --replicas=3
+  189  kubectl get pods
+  190  # Rolling update
+  191  kubectl set image deployment/nginx-demo nginx=nginx:1.16.1
+  192  kubectl rollout status deployment/nginx-demo
+  193  # Historique
+  194  kubectl rollout history deployment/nginx-demo
+  195  # Rollback
+  196  kubectl rollout undo deployment/nginx-demo
+  197  # Scale
+  198  kubectl scale deployment/nginx-demo --replicas=5
+  199  kubectl get pods
+  200  kubectl port-forward --address 0.0.0.0 svc/frontend 8080:80
+  201  kubectl port-forward --address 0.0.0.0 deployment/nginx-demo 9090:80
+  202  kubectl apply -f https://k8s.io/examples/application/deployment-scale.yaml
+  203  kubectl port-forward --address 0.0.0.0 deployment/nginx-deployment 7070:80
+  204  kubectl get pods -l app=nginx -w
+  205  # Rolling update : passer de nginx 1.14.2 → 1.16.1
+  206  kubectl set image deployment/nginx-demo nginx=nginx:1.16.1
+  207  kubectl rollout status deployment/nginx-demo
+  208  # Voir l'historique des versions
+  209  kubectl rollout history deployment/nginx-demo
+  210  # Rollback : revenir à la version précédente
+  211  kubectl rollout undo deployment/nginx-demo
+  212  kubectl rollout status deployment/nginx-demo
+  213  # Vérifier que c'est revenu à 1.14.2
+  214  kubectl describe deployment nginx-demo | grep Image
+  215  # Pause / Resume
+  216  kubectl rollout pause deployment/nginx-demo
+  217  kubectl set image deployment/nginx-demo nginx=nginx:1.25
+  218  kubectl rollout resume deployment/nginx-demo
+  219  kubectl rollout status deployment/nginx-demo
+  220  kubectl run test-curl --rm -it --image=busybox -- wget -qO- http://django-star-admin-svc
+  221  kubectl port-forward --address 0.0.0.0 svc/flask-ecommerce-svc 8082:80
+  222  curl http://$(minikube ip):31554
+  223  kubectl run test-curl --rm -it --image=busybox -- wget -qO- http://django-star-admin-svc
+  224  kubectl get pods
+  225  kubectl get services
+  226  ls ~/k8s-manifests/
+  227  curl -s http://192.168.52.128:8082 | head -5
+  228  curl -s http://192.168.52.128:8081 | head -5
+  229  kubectl run test --rm -it --image=busybox -- wget -qO- http://django-star-admin-svc | head -5
+  230  kubectl port-forward --address 0.0.0.0 svc/flask-ecommerce-svc 8082:80
+  231  minikube start
+  232  eval $(minikube docker-env)
+  233  mkdir -p ~/stripe-checkout
+  234  cat <<'EOF' > ~/stripe-checkout/server.py
+  235  import os
+  236  import stripe
+  237  from flask import Flask, redirect, request, send_from_directory
+  239  app = Flask(__name__, static_folder='public')
+  240  YOUR_DOMAIN = os.environ.get('APP_DOMAIN', 'http://localhost:4242')
+  241  @app.route('/')
+  242  def index():
+  243      return redirect('/checkout.html')
+  244  @app.route('/checkout.html')
+  245  def checkout():
+  246      return send_from_directory('public', 'checkout.html')
+  247  @app.route('/success.html')
+  248  def success():
+  249      return send_from_directory('public', 'success.html')
+  250  @app.route('/cancel.html')
+  251  def cancel():
+  252      return send_from_directory('public', 'cancel.html')
+  253  @app.route('/create-checkout-session', methods=['POST'])
+  254  def create_checkout_session():
+  255      try:
+  256          checkout_session = stripe.checkout.Session.create(
+  257              line_items=[
+  258                  {
+  259                      'price_data': {
+  260                          'currency': 'eur',
+  261                          'product_data': {
+  262                              'name': 'T-shirt',
+  263                          },
+  264                          'unit_amount': 2000,
+  265                      },
+  266                      'quantity': 1,
+  267                  },
+  268              ],
+  269              mode='payment',
+  270              success_url=YOUR_DOMAIN + '/success.html',
+  271              cancel_url=YOUR_DOMAIN + '/cancel.html',
+  272          )
+  273      except Exception as e:
+  274          return str(e), 400
+  275      return redirect(checkout_session.url, code=303)
+  276  @app.route('/health')
+  277  def health():
+  278      env = os.environ.get('APP_ENV', 'unknown')
+  279      return f'OK - env: {env}'
+  280  if __name__ == '__main__':
+  281      app.run(host='0.0.0.0', port=4242)
+  282  EOF
+  283  mkdir -p ~/stripe-checkout/public
+  284  cat <<'EOF' > ~/stripe-checkout/public/checkout.html
+  285  <!DOCTYPE html>
+  286  <html>
+  287  <head><title>Checkout</title>
+  288  <style>
+  289  body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f6f9fc; }
+  290  .product { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
+  291  img { width: 200px; border-radius: 8px; }
+  292  button { background: #556cd6; color: white; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 20px; }
+  293  button:hover { background: #4457b0; }
+  294  </style>
+  295  </head>
+  296  <body>
+  297  <div class="product">
+  298    <img src="https://i.imgur.com/EHyR2nP.png" alt="Product" />
+  299    <h3>T-shirt</h3>
+  300    <h5>20,00 EUR</h5>
+  301    <form action="/create-checkout-session" method="POST">
+  302      <button type="submit">Payer</button>
+  303    </form>
+  304  </div>
+  305  </body>
+  306  </html>
+  307  EOF
+  308  cat <<'EOF' > ~/stripe-checkout/public/success.html
+  309  <!DOCTYPE html>
+  310  <html>
+  311  <head><title>Paiement réussi</title>
+  312  <style>
+  313  body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f6f9fc; }
+  314  section { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
+  315  </style>
+  316  </head>
+  317  <body>
+  318  <section>
+  319    <h1>Paiement réussi !</h1>
+  320    <p>Merci pour votre achat. Un email de confirmation va être envoyé.</p>
+  321    <a href="/checkout.html">Retour</a>
+  322  </section>
+  323  </body>
+  324  </html>
+  325  EOF
+  326  cat <<'EOF' > ~/stripe-checkout/public/cancel.html
+  327  <!DOCTYPE html>
+  328  <html>
+  329  <head><title>Paiement annulé</title>
+  330  <style>
+  331  body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f6f9fc; }
+  332  section { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
+  333  </style>
+  334  </head>
+  335  <body>
+  336  <section>
+  337    <h1>Paiement annulé</h1>
+  338    <p>Vous pouvez réessayer quand vous voulez.</p>
+  339    <a href="/checkout.html">Retour</a>
+  340  </section>
+  341  </body>
+  342  </html>
+  343  EOF
+  344  cat <<'EOF' > ~/stripe-checkout/requirements.txt
+  345  flask==3.1.2
+  346  stripe==14.4.0
+  347  gunicorn==21.2.0
+  348  EOF
+  349  cat <<'EOF' > ~/stripe-checkout/Dockerfile
+  350  FROM python:3.11-slim AS builder
+  351  WORKDIR /app
+  352  COPY requirements.txt .
+  353  RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+  354  FROM python:3.11-slim
+  355  WORKDIR /app
+  356  COPY --from=builder /install /usr/local
+  357  COPY . .
+  358  EXPOSE 4242
+  359  CMD ["gunicorn", "--bind", "0.0.0.0:4242", "server:app"]
+  360  EOF
+  361  docker build -t stripe-checkout ~/stripe-checkout/
+  362  kubectl create namespace preprod
+  363  kubectl create namespace dev
+  365  kubectl create configmap stripe-config   --from-literal=APP_ENV=preprod   --from-literal=APP_DOMAIN=http://localhost:4242   --from-literal=DEBUG=false   -n preprod
+  366  kubectl create secret generic app-secret   --from-literal=SECRET_KEY='django-insecure-dev-key-123456'   --from-literal=DB_PASSWORD='devpassword123'   -n dev
+  367  kubectl create configmap app-config   --from-literal=APP_ENV=dev   --from-literal=DEBUG=true   --from-literal=APP_NAME=django-adminlte   -n dev
+  368  mkdir -p ~/k8s-tp
+  369  cat <<'EOF' > ~/k8s-tp/stripe-deployment.yaml
+  370  apiVersion: apps/v1
+  371  kind: Deployment
+  372  metadata:
+  373    name: stripe-checkout
+  374    namespace: preprod
+  375  spec:
+  376    replicas: 2
+  377    selector:
+  378      matchLabels:
+  379        app: stripe-checkout
+  380    template:
+  381      metadata:
+  382        labels:
+  383          app: stripe-checkout
+  384      spec:
+  385        containers:
+  386        - name: stripe-checkout
+  387          image: stripe-checkout
+  388          imagePullPolicy: Never
+  389          ports:
+  390          - containerPort: 4242
+  391          envFrom:
+  392          - configMapRef:
+  393              name: stripe-config
+  394          - secretRef:
+  395              name: stripe-secret
+  396  EOF
+  397  cat <<'EOF' > ~/k8s-tp/stripe-service.yaml
+  398  apiVersion: v1
+  399  kind: Service
+  400  metadata:
+  401    name: stripe-checkout-svc
+  402    namespace: preprod
+  403  spec:
+  404    type: NodePort
+  405    selector:
+  406      app: stripe-checkout
+  407    ports:
+  408    - port: 80
+  409      targetPort: 4242
+  410  EOF
+  411  cat <<'EOF' > ~/k8s-tp/adminlte-deployment.yaml
+  412  apiVersion: apps/v1
+  413  kind: Deployment
+  414  metadata:
+  415    name: django-adminlte
+  416    namespace: dev
+  417  spec:
+  418    replicas: 2
+  419    selector:
+  420      matchLabels:
+  421        app: django-adminlte
+  422    template:
+  423      metadata:
+  424        labels:
+  425          app: django-adminlte
+  426      spec:
+  427        containers:
+  428        - name: django-adminlte
+  429          image: django-adminlte
+  430          imagePullPolicy: Never
+  431          ports:
+  432          - containerPort: 5005
+  433          envFrom:
+  434          - configMapRef:
+  435              name: app-config
+  436          - secretRef:
+  437              name: app-secret
+  438  EOF
+  439  cat <<'EOF' > ~/k8s-tp/adminlte-service.yaml
+  440  apiVersion: v1
+  441  kind: Service
+  442  metadata:
+  443    name: django-adminlte-svc
+  444    namespace: dev
+  445  spec:
+  446    type: NodePort
+  447    selector:
+  448      app: django-adminlte
+  449    ports:
+  450    - port: 80
+  451      targetPort: 5005
+  452  EOF
+  453  kubectl apply -f ~/k8s-tp/
+  454  kubectl get pods -n preprod
+  455  kubectl get pods -n dev
+  456  kubectl get services -n preprod
+  457  kubectl get services -n dev
+  458  kubectl exec -it deploy/stripe-checkout -n preprod -- env | grep -E "STRIPE|APP|DEBUG"
+  459  kubectl exec -it deploy/django-adminlte -n dev -- env | grep -E "APP|SECRET|DB|DEBUG"
+  460  kubectl port-forward --address 0.0.0.0 svc/stripe-checkout-svc -n preprod 4242:80
+  461  kubectl delete configmap stripe-config -n preprod
+  462  kubectl create configmap stripe-config   --from-literal=APP_ENV=preprod   --from-literal=APP_DOMAIN=http://192.168.52.128:4242   --from-literal=DEBUG=false   -n preprod
+  463  kubectl rollout restart deployment/stripe-checkout -n preprod
+  464  kubectl port-forward --address 0.0.0.0 svc/stripe-checkout-svc -n preprod 4242:80
+  465  kubectl get pods -n dev
+  466  kubectl port-forward --address 0.0.0.0 svc/django-adminlte-svc -n dev 8081:80
+  467  kubectl exec -it deploy/stripe-checkout -n preprod -- env | grep -E "STRIPE|APP|DEBUG"
+  468  kubectl exec -it deploy/django-adminlte -n dev -- env | grep -E "APP|SECRET|DB|DEBUG"
+  469  curl -sSL https://github.com/ekzhang/bore/releases/latest/download/bore-v0.5.2-x86_64-unknown-linux-musl.tar.gz | tar xz
+  470  sudo mv bore /usr/local/bin/
+  471  bore local 4242 --to bore.pub
+  472  wget https://github.com/ekzhang/bore/releases/download/v0.5.2/bore-v0.5.2-x86_64-unknown-linux-musl.tar.gz
+  473  tar xzf bore-v0.5.2-x86_64-unknown-linux-musl.tar.gz
+  474  sudo mv bore /usr/local/bin/
+  475  bore --version
+  476  bore local 4242 --to bore.pub
+  477  kubectl delete configmap stripe-config -n preprod
+  478  kubectl create configmap stripe-config   --from-literal=APP_ENV=preprod   --from-literal=APP_DOMAIN=http://bore.pub:42049   --from-literal=DEBUG=false   -n preprod
+  479  kubectl rollout restart deployment/stripe-checkout -n preprod
+  480  bore local 4242 --to bore.pub
+  481  [200~kubectl delete all --all --all-namespaces
+  482  kubectl delete namespace preprod dev appa appb appc 2>/dev/null~
+  483  sudo su
+  484  exit
+  485  kubectl exec -it $(kubectl get pods -n dev -l app=ecommerce -o name | head -1) -n dev -- printenv | grep STRIPE
+  486  kubectl annotate deployment ecommerce-deployment-cv -n dev kubernetes.io/change-cause="v1.0 - version initiale ecommerce stripe"
+  487  kubectl annotate deployment ecommerce-deployment-cv -n preprod kubernetes.io/change-cause="v1.0 - version initiale ecommerce stripe"
+  488  kubectl annotate deployment ecommerce-deployment-cv -n prod kubernetes.io/change-cause="v1.0 - version initiale ecommerce stripe"
+  489  kubectl rollout history deployment ecommerce-deployment-cv -n dev
+  490  eval $(minikube docker-env)
+  491  sed -i 's/stripe==4.2.0/stripe==4.3.0/' apps/priv-rocket-ecommerce-main/requirements.txt
+  492  docker build -t ecommerce-stripe-cv:2.0 apps/priv-rocket-ecommerce-main/
+  493  sed -i 's/stripe==4.3.0/stripe==5.0.0/' apps/priv-rocket-ecommerce-main/requirements.txt
+  494  docker build -t ecommerce-stripe-cv:2.0 apps/priv-rocket-ecommerce-main/
+  495  kubectl annotate deployment ecommerce-deployment-cv -n dev kubernetes.io/change-cause="v1.0 - version initiale ecommerce stripe" --overwrite
+  496  kubectl rollout history deployment ecommerce-deployment-cv -n dev
+  497  kubectl set image deployment/ecommerce-deployment-cv ecommerce-stripe=ecommerce-stripe-cv:2.0 -n dev
+  498  kubectl annotate deployment ecommerce-deployment-cv -n dev kubernetes.io/change-cause="v2.0 - mise a jour stripe 5.0.0" --overwrite
+  499  kubectl rollout status deployment ecommerce-deployment-cv -n dev
+  500  kubectl describe deployment ecommerce-deployment-cv -n dev | grep Image
+  501  kubectl rollout history deployment ecommerce-deployment-cv -n dev
+  502  kubectl rollout undo deployment ecommerce-deployment-cv -n dev --to-revision=1
+  503  kubectl rollout status deployment ecommerce-deployment-cv -n dev
+  504  kubectl describe deployment ecommerce-deployment-cv -n dev | grep Image
+  505  kubectl rollout history deployment ecommerce-deployment-cv -n dev
+  506  kubectl annotate deployment ecommerce-deployment-cv -n dev kubernetes.io/change-cause="v1.0 - version initiale ecommerce stripe" --overwrite
+  507  echo "=== AVANT ROLLOUT ===" > logs/rollout-rollback.log
+  508  kubectl rollout history deployment ecommerce-deployment-cv -n dev >> logs/rollout-rollback.log
+  509  echo "" >> logs/rollout-rollback.log
+  510  echo "=== IMAGE AVANT ROLLOUT ===" >> logs/rollout-rollback.log
+  511  kubectl describe deployment ecommerce-deployment-cv -n dev | grep Image >> logs/rollout-rollback.log
+  512  echo "" >> logs/rollout-rollback.log
+  513  kubectl set image deployment/ecommerce-deployment-cv ecommerce-stripe=ecommerce-stripe-cv:2.0 -n dev
+  514  kubectl annotate deployment ecommerce-deployment-cv -n dev kubernetes.io/change-cause="v2.0 - mise a jour stripe 5.0.0" --overwrite
+  515  kubectl rollout status deployment ecommerce-deployment-cv -n dev
+  516  echo "=== APRES ROLLOUT V2 ===" >> logs/rollout-rollback.log
+  517  kubectl rollout history deployment ecommerce-deployment-cv -n dev >> logs/rollout-rollback.log
+  518  echo "" >> logs/rollout-rollback.log
+  519  echo "=== IMAGE APRES ROLLOUT ===" >> logs/rollout-rollback.log
+  520  kubectl describe deployment ecommerce-deployment-cv -n dev | grep Image >> logs/rollout-rollback.log
+  521  echo "" >> logs/rollout-rollback.log
+  522  echo "=== PODS APRES ROLLOUT ===" >> logs/rollout-rollback.log
+  523  kubectl get pods -n dev -l app=ecommerce >> logs/rollout-rollback.log
+  524  echo "" >> logs/rollout-rollback.log
+  525  kubectl rollout undo deployment ecommerce-deployment-cv -n dev --to-revision=1
+  526  kubectl rollout status deployment ecommerce-deployment-cv -n dev
+  527  echo "=== APRES ROLLBACK V1 ===" >> logs/rollout-rollback.log
+  528  kubectl rollout history deployment ecommerce-deployment-cv -n dev >> logs/rollout-rollback.log
+  529  echo "" >> logs/rollout-rollback.log
+  530  echo "=== IMAGE APRES ROLLBACK ===" >> logs/rollout-rollback.log
+  531  kubectl describe deployment ecommerce-deployment-cv -n dev | grep Image >> logs/rollout-rollback.log
+  532  echo "" >> logs/rollout-rollback.log
+  533  echo "=== PODS APRES ROLLBACK ===" >> logs/rollout-rollback.log
+  534  kubectl get pods -n dev -l app=ecommerce >> logs/rollout-rollback.log
+  535  cat logs/rollout-rollback.log
+  536  git add .
+  537  git commit -m "feat: rollout v2.0 et rollback v1.0 ecommerce avec logs de preuve"
+  538  git push
+  539  kubectl rollout history deployment ecommerce-deployment-cv -n dev
+  540  kubectl rollout undo deployment ecommerce-deployment-cv -n dev --to-revision=3
+  541  kubectl rollout status deployment ecommerce-deployment-cv -n dev
+  542  kubectl describe deployment ecommerce-deployment-cv -n dev | grep Image
+  543  echo "" >> logs/rollout-rollback.log
+  544  echo "=== ROLLBACK CORRIGE ===" >> logs/rollout-rollback.log
+  545  echo "=== IMAGE APRES ROLLBACK VERS REVISION 3 ===" >> logs/rollout-rollback.log
+  546  kubectl describe deployment ecommerce-deployment-cv -n dev | grep Image >> logs/rollout-rollback.log
+  547  echo "" >> logs/rollout-rollback.log
+  548  echo "=== HISTORIQUE FINAL ===" >> logs/rollout-rollback.log
+  549  kubectl rollout history deployment ecommerce-deployment-cv -n dev >> logs/rollout-rollback.log
+  550  cat logs/rollout-rollback.log
+  551  git add .
+  552  git commit -m "feat: rollout v2.0 et rollback v1.0 ecommerce avec logs de preuve-2"
+  553  git push
+  554  history > logs/history-projet-CV-25-03-2026.log
+  555  kubectl logs deployment/ecommerce-deployment-cv -n dev --tail=50 > logs/docker-logs-ecommerce-CV-25-03-2026.log
+  556  kubectl logs deployment/django-pro-deployment-cv -n dev --tail=50 > logs/docker-logs-django-pro-CV-25-03-2026.log
+  557  kubectl logs deployment/dashboard-deployment-cv -n dev --tail=50 > logs/docker-logs-dashboard-CV-25-03-2026.log
+  558  kubectl get events -n dev --sort-by='.lastTimestamp' > logs/k8s-events-dev-CV-25-03-2026.log
+  559  kubectl get events -n preprod --sort-by='.lastTimestamp' > logs/k8s-events-preprod-CV-25-03-2026.log
+  560  kubectl get events -n prod --sort-by='.lastTimestamp' > logs/k8s-events-prod-CV-25-03-2026.log
+  561  kubectl get all -n dev > logs/etat-cluster-dev.log
+  562  kubectl get all -n preprod > logs/etat-cluster-preprod.log
+  563  kubectl get all -n prod > logs/etat-cluster-prod.log
+  564  kubectl get hpa -n preprod >> logs/etat-cluster-preprod.log
+  565  kubectl get hpa -n prod >> logs/etat-cluster-prod.log
+  566  ls -la logs/
+  567  git add .
+  568  git commit -m "logs: ajout historiques shell, docker logs, k8s events pour les 3 envs"
+  569  git push
+  570  git add .
+  571  git commit -m "logs: ajout historiques shell, docker logs, k8s events pour les 3 envs"
+  572  git push
+  573  cat .gitignore
+  574  sed -i 's/\*\.log//' .gitignor
+  575  echo "# Autoriser les logs du projet" >> .gitignore
+  576  cat > .gitignore << 'EOF'
+# Fichiers sensibles
+.env
+.env.*
+*.secret
+*-secret-*.yaml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+EOF
+
+  577  git add logs/ -f
+  578  git add .gitignore
+  579  git commit -m "logs: ajout historiques shell, docker logs, k8s events pour les 3 envs"
+  580  git push
+  583  sed -i '/STRIPE/d' logs/history-projet-CV-25-03-2026.log
+  585  git push --force
+  586  git rm logs/history-projet-CV-25-03-2026.log

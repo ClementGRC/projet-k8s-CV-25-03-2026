@@ -1,0 +1,34 @@
+NAME                                           READY   STATUS    RESTARTS   AGE
+pod/dashboard-deployment-cv-844b77d7bb-jnnzp   1/1     Running   0          61m
+pod/dashboard-deployment-cv-844b77d7bb-k9lxb   1/1     Running   0          61m
+pod/dashboard-deployment-cv-844b77d7bb-xqw2z   1/1     Running   0          61m
+pod/django-pro-deployment-cv-dbd5bdbbf-6wtc7   1/1     Running   0          61m
+pod/django-pro-deployment-cv-dbd5bdbbf-9wb6l   1/1     Running   0          61m
+pod/django-pro-deployment-cv-dbd5bdbbf-srl4x   1/1     Running   0          61m
+pod/ecommerce-deployment-cv-6f59c847bd-5hrjl   1/1     Running   0          61m
+pod/ecommerce-deployment-cv-6f59c847bd-dcqgw   1/1     Running   0          61m
+pod/ecommerce-deployment-cv-6f59c847bd-pwhzk   1/1     Running   0          61m
+
+NAME                            TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+service/dashboard-service-cv    LoadBalancer   10.107.162.232   <pending>     5005:32005/TCP   76m
+service/django-pro-service-cv   LoadBalancer   10.101.75.131    <pending>     5005:32657/TCP   76m
+service/ecommerce-service-cv    LoadBalancer   10.106.251.136   <pending>     5005:31842/TCP   76m
+
+NAME                                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/dashboard-deployment-cv    3/3     3            3           61m
+deployment.apps/django-pro-deployment-cv   3/3     3            3           61m
+deployment.apps/ecommerce-deployment-cv    3/3     3            3           61m
+
+NAME                                                 DESIRED   CURRENT   READY   AGE
+replicaset.apps/dashboard-deployment-cv-844b77d7bb   3         3         3       61m
+replicaset.apps/django-pro-deployment-cv-dbd5bdbbf   3         3         3       61m
+replicaset.apps/ecommerce-deployment-cv-6f59c847bd   3         3         3       61m
+
+NAME                                                    REFERENCE                             TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/dashboard-hpa-cv    Deployment/dashboard-deployment-cv    cpu: 2%/50%   3         10        3          76m
+horizontalpodautoscaler.autoscaling/django-pro-hpa-cv   Deployment/django-pro-deployment-cv   cpu: 2%/50%   3         10        3          76m
+horizontalpodautoscaler.autoscaling/ecommerce-hpa-cv    Deployment/ecommerce-deployment-cv    cpu: 2%/50%   3         10        3          76m
+NAME                REFERENCE                             TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+dashboard-hpa-cv    Deployment/dashboard-deployment-cv    cpu: 2%/50%   3         10        3          76m
+django-pro-hpa-cv   Deployment/django-pro-deployment-cv   cpu: 2%/50%   3         10        3          76m
+ecommerce-hpa-cv    Deployment/ecommerce-deployment-cv    cpu: 2%/50%   3         10        3          76m

@@ -1,0 +1,50 @@
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/js/plugins/smooth-scrollbar.min.js
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/js/soft-ui-dashboard.min.js
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/js/plugins/jkanban/jkanban.js
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/js/core/bootstrap.min.js
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/js/plugins/perfect-scrollbar.min.js
+127.0.0.1 - - [25/Mar/2026:11:22:14 +0000] "GET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1" 200 0 "http://192.168.52.128:5007/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/js/core/popper.min.js
+127.0.0.1 - - [25/Mar/2026:11:22:14 +0000] "GET /static/assets/js/core/popper.min.js HTTP/1.1" 200 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/js/plugins/jkanban/jkanban.js
+127.0.0.1 - - [25/Mar/2026:11:22:14 +0000] "GET /static/assets/js/plugins/jkanban/jkanban.js HTTP/1.1" 200 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/js/plugins/chartjs.min.js
+127.0.0.1 - - [25/Mar/2026:11:22:14 +0000] "GET /static/assets/js/plugins/chartjs.min.js HTTP/1.1" 200 0 "http://192.168.52.128:5007/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/js/plugins/threejs.js
+127.0.0.1 - - [25/Mar/2026:11:22:14 +0000] "GET /static/assets/js/plugins/threejs.js HTTP/1.1" 200 0 "http://192.168.52.128:5007/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/js/plugins/orbit-controls.js
+127.0.0.1 - - [25/Mar/2026:11:22:14 +0000] "GET /static/assets/js/plugins/orbit-controls.js HTTP/1.1" 200 0 "http://192.168.52.128:5007/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/js/plugins/dragula/dragula.min.js
+127.0.0.1 - - [25/Mar/2026:11:22:14 +0000] "GET /static/assets/js/plugins/dragula/dragula.min.js HTTP/1.1" 200 0 "http://192.168.52.128:5007/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+127.0.0.1 - - [25/Mar/2026:11:22:14 +0000] "GET /static/assets/js/plugins/smooth-scrollbar.min.js HTTP/1.1" 200 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/js/plugins/smooth-scrollbar.min.js
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/js/core/bootstrap.min.js
+127.0.0.1 - - [25/Mar/2026:11:22:14 +0000] "GET /static/assets/js/core/bootstrap.min.js HTTP/1.1" 200 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/js/soft-ui-dashboard.min.js
+127.0.0.1 - - [25/Mar/2026:11:22:14 +0000] "GET /static/assets/js/soft-ui-dashboard.min.js?v=1.2.0 HTTP/1.1" 200 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/img/icons/flags/BR.png
+127.0.0.1 - - [25/Mar/2026:11:22:14 +0000] "GET /static/assets/img/icons/flags/BR.png HTTP/1.1" 200 0 "http://192.168.52.128:5007/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/debug_toolbar/css/toolbar.css
+127.0.0.1 - - [25/Mar/2026:11:22:14 +0000] "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 0 "http://192.168.52.128:5007/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/img/curved-images/white-curved.jpg
+127.0.0.1 - - [25/Mar/2026:11:22:14 +0000] "GET /static/assets/img/curved-images/white-curved.jpg HTTP/1.1" 200 0 "http://192.168.52.128:5007/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/img/icons/flags/GB.png
+127.0.0.1 - - [25/Mar/2026:11:22:14 +0000] "GET /static/assets/img/icons/flags/GB.png HTTP/1.1" 200 0 "http://192.168.52.128:5007/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/js/plugins/perfect-scrollbar.min.js
+127.0.0.1 - - [25/Mar/2026:11:22:14 +0000] "GET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1" 200 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/debug_toolbar/css/print.css
+127.0.0.1 - - [25/Mar/2026:11:22:14 +0000] "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 0 "http://192.168.52.128:5007/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/js/plugins/chartjs.min.js
+127.0.0.1 - - [25/Mar/2026:11:22:14 +0000] "GET /static/assets/js/plugins/chartjs.min.js HTTP/1.1" 200 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/debug_toolbar/js/utils.js
+127.0.0.1 - - [25/Mar/2026:11:22:14 +0000] "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 0 "http://192.168.52.128:5007/static/debug_toolbar/js/toolbar.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/js/plugins/dragula/dragula.min.js
+127.0.0.1 - - [25/Mar/2026:11:22:14 +0000] "GET /static/assets/js/plugins/dragula/dragula.min.js HTTP/1.1" 200 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+127.0.0.1 - - [25/Mar/2026:11:22:15 +0000] "GET /static/assets/js/plugins/orbit-controls.js HTTP/1.1" 200 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:14 +0000] [7] [DEBUG] GET /static/assets/js/plugins/orbit-controls.js
+[2026-03-25 11:22:15 +0000] [7] [DEBUG] GET /static/assets/js/plugins/threejs.js
+127.0.0.1 - - [25/Mar/2026:11:22:15 +0000] "GET /static/assets/js/plugins/threejs.js HTTP/1.1" 200 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:15 +0000] [7] [DEBUG] GET /static/debug_toolbar/js/utils.js
+127.0.0.1 - - [25/Mar/2026:11:22:15 +0000] "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+[2026-03-25 11:22:15 +0000] [7] [DEBUG] GET /static/assets/img/favicon.png
+127.0.0.1 - - [25/Mar/2026:11:22:15 +0000] "GET /static/assets/img/favicon.png HTTP/1.1" 200 0 "http://192.168.52.128:5007/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"

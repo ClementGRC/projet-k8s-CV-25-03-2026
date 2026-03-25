@@ -1,0 +1,50 @@
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  logconfig_json: None
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: True
+  statsd_host: None
+  dogstatsd_tags: 
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: core.wsgi
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7081a8470d60>
+  on_reload: <function OnReload.on_reload at 0x7081a8470ea0>
+  when_ready: <function WhenReady.when_ready at 0x7081a8470fe0>
+  pre_fork: <function Prefork.pre_fork at 0x7081a8471120>
+  post_fork: <function Postfork.post_fork at 0x7081a8471260>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7081a84713a0>
+  worker_int: <function WorkerInt.worker_int at 0x7081a84714e0>
+  worker_abort: <function WorkerAbort.worker_abort at 0x7081a8471620>
+  pre_exec: <function PreExec.pre_exec at 0x7081a8471760>
+  pre_request: <function PreRequest.pre_request at 0x7081a84718a0>
+  post_request: <function PostRequest.post_request at 0x7081a8471940>
+  child_exit: <function ChildExit.child_exit at 0x7081a8471a80>
+  worker_exit: <function WorkerExit.worker_exit at 0x7081a8471bc0>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7081a8471d00>
+  on_exit: <function OnExit.on_exit at 0x7081a8471e40>
+  ssl_context: <function NewSSLContext.ssl_context at 0x7081a8472020>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: None
+  raw_paste_global_conf: []
+  strip_header_spaces: False
+[2026-03-25 11:26:16 +0000] [1] [INFO] Starting gunicorn 21.2.0
+[2026-03-25 11:26:16 +0000] [1] [DEBUG] Arbiter booted
+[2026-03-25 11:26:16 +0000] [1] [INFO] Listening at: http://0.0.0.0:5005 (1)
+[2026-03-25 11:26:16 +0000] [1] [INFO] Using worker: sync
+[2026-03-25 11:26:16 +0000] [7] [INFO] Booting worker with pid: 7
+[2026-03-25 11:26:16 +0000] [1] [DEBUG] 1 workers
