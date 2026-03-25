@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ecommerce-configmap-CV-25-03-2026
+  name: dashboard-configmap-cv
   namespace: dev
   labels:
-    app: ecommerce
+    app: dashboard
     env: dev
 data:
   DEBUG: "True"

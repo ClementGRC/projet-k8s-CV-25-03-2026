@@ -1,35 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ecommerce-deployment-CV-25-03-2026
+  name: django-pro-deployment-cv
   namespace: dev
   labels:
-    app: ecommerce
+    app: django-pro
     env: dev
     tier: frontend
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: ecommerce
+      app: django-pro
   template:
     metadata:
       labels:
-        app: ecommerce
+        app: django-pro
         env: dev
         tier: frontend
     spec:
       containers:
-        - name: ecommerce-stripe
-          image: soso725/rocketecommerce:beta
-          imagePullPolicy: IfNotPresent
+        - name: django-pro
+          image: django-pro-cv:1.0
+          imagePullPolicy: Never
           ports:
             - containerPort: 5005
           envFrom:
             - configMapRef:
-                name: ecommerce-configmap-CV-25-03-2026
+                name: django-pro-configmap-cv
             - secretRef:
-                name: ecommerce-secret-CV-25-03-2026
+                name: django-pro-secret-cv
           resources:
             requests:
               memory: "256Mi"
@@ -41,17 +41,17 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ecommerce-service-CV-25-03-2026
+  name: django-pro-service-cv
   namespace: dev
   labels:
-    app: ecommerce
+    app: django-pro
     env: dev
 spec:
   type: NodePort
   selector:
-    app: ecommerce
+    app: django-pro
   ports:
     - port: 5005
       targetPort: 5005
       protocol: TCP
-      name: ecommerce-np
+      name: django-pro-np
