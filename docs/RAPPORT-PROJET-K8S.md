@@ -58,38 +58,7 @@ Le client souhaite un POC basé sur Kubernetes. L'une des 3 applications doit ob
 
 ## 2. Architecture globale
 
-```
-                        ┌─────────────────────────────────────────────┐
-                        │            Cluster Minikube                 │
-                        │         (1 node, 6 Go RAM, 2 CPUs)         │
-                        │                                             │
-                        │  ┌───────────┐ ┌───────────┐ ┌───────────┐ │
-                        │  │ Namespace │ │ Namespace │ │ Namespace │ │
-                        │  │    dev    │ │  preprod  │ │   prod    │ │
-                        │  │           │ │           │ │           │ │
-                        │  │ ┌───────┐ │ │ ┌───────┐ │ │ ┌───────┐ │ │
-                        │  │ │Ecomm. │ │ │ │Ecomm. │ │ │ │Ecomm. │ │ │
-                        │  │ │x3 rep.│ │ │ │x3 rep.│ │ │ │x3 rep.│ │ │
-                        │  │ │+Stripe│ │ │ │+Stripe│ │ │ │+Stripe│ │ │
-                        │  │ └───────┘ │ │ │+ HPA  │ │ │ │+ HPA  │ │ │
-                        │  │ ┌───────┐ │ │ └───────┘ │ │ └───────┘ │ │
-                        │  │ │Django │ │ │ ┌───────┐ │ │ ┌───────┐ │ │
-                        │  │ │Pro    │ │ │ │Django │ │ │ │Django │ │ │
-                        │  │ │x3 rep.│ │ │ │Pro    │ │ │ │Pro    │ │ │
-                        │  │ └───────┘ │ │ │x3+HPA│ │ │ │x3+HPA│ │ │
-                        │  │ ┌───────┐ │ │ └───────┘ │ │ └───────┘ │ │
-                        │  │ │Dashb. │ │ │ ┌───────┐ │ │ ┌───────┐ │ │
-                        │  │ │x3 rep.│ │ │ │Dashb. │ │ │ │Dashb. │ │ │
-                        │  │ └───────┘ │ │ │x3+HPA│ │ │ │x3+HPA│ │ │
-                        │  │           │ │ └───────┘ │ │ └───────┘ │ │
-                        │  │ NodePort  │ │ LoadBal.  │ │ LoadBal.  │ │
-                        │  └───────────┘ └───────────┘ └───────────┘ │
-                        │                                             │
-                        │  27 pods total (3 apps × 3 replicas × 3 envs)│
-                        │                                             │
-                        │  Images : Docker Hub (clemgrc/)             │
-                        └─────────────────────────────────────────────┘
-```
+![Schema infra](screenshots/SchemaInfra.png)
 
 **Par application, chaque environnement contient :**
 
@@ -171,8 +140,8 @@ Les secrets (clés Stripe) sont gérés via des objets Kubernetes `Secret` de ty
 mkdir projet-k8s-CV-25-03-2026
 cd projet-k8s-CV-25-03-2026
 git init
-git config --global user.name "ClementGRC"
-git config --global user.email "greco.clement57@gmail.com"
+git config --global user.name "xxxxxx"
+git config --global user.email "xxxxxxx"
 ```
 
 **Structure finale du projet :**

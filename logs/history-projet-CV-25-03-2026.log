@@ -453,7 +453,6 @@
   455  kubectl get pods -n dev
   456  kubectl get services -n preprod
   457  kubectl get services -n dev
-  458  kubectl exec -it deploy/stripe-checkout -n preprod -- env | grep -E "STRIPE|APP|DEBUG"
   459  kubectl exec -it deploy/django-adminlte -n dev -- env | grep -E "APP|SECRET|DB|DEBUG"
   460  kubectl port-forward --address 0.0.0.0 svc/stripe-checkout-svc -n preprod 4242:80
   461  kubectl delete configmap stripe-config -n preprod
@@ -462,7 +461,6 @@
   464  kubectl port-forward --address 0.0.0.0 svc/stripe-checkout-svc -n preprod 4242:80
   465  kubectl get pods -n dev
   466  kubectl port-forward --address 0.0.0.0 svc/django-adminlte-svc -n dev 8081:80
-  467  kubectl exec -it deploy/stripe-checkout -n preprod -- env | grep -E "STRIPE|APP|DEBUG"
   468  kubectl exec -it deploy/django-adminlte -n dev -- env | grep -E "APP|SECRET|DB|DEBUG"
   469  curl -sSL https://github.com/ekzhang/bore/releases/latest/download/bore-v0.5.2-x86_64-unknown-linux-musl.tar.gz | tar xz
   470  sudo mv bore /usr/local/bin/
@@ -480,7 +478,6 @@
   482  kubectl delete namespace preprod dev appa appb appc 2>/dev/null~
   483  sudo su
   484  exit
-  485  kubectl exec -it $(kubectl get pods -n dev -l app=ecommerce -o name | head -1) -n dev -- printenv | grep STRIPE
   486  kubectl annotate deployment ecommerce-deployment-cv -n dev kubernetes.io/change-cause="v1.0 - version initiale ecommerce stripe"
   487  kubectl annotate deployment ecommerce-deployment-cv -n preprod kubernetes.io/change-cause="v1.0 - version initiale ecommerce stripe"
   488  kubectl annotate deployment ecommerce-deployment-cv -n prod kubernetes.io/change-cause="v1.0 - version initiale ecommerce stripe"
@@ -594,6 +591,387 @@ EOF
   578  git add .gitignore
   579  git commit -m "logs: ajout historiques shell, docker logs, k8s events pour les 3 envs"
   580  git push
-  583  sed -i '/STRIPE/d' logs/history-projet-CV-25-03-2026.log
   585  git push --force
   586  git rm logs/history-projet-CV-25-03-2026.log
+  588  git add logs/history-projet-CV-25-03-2026.log
+  589  git commit --amend -m "logs: ajout historiques shell, docker logs, k8s events pour les 3 envs"
+  590  git push --force
+  591  mkdir -p infra/ecommerce/base
+  592  mkdir -p infra/ecommerce/overlays/dev
+  593  mkdir -p infra/ecommerce/overlays/preprod
+  594  mkdir -p infra/ecommerce/overlays/prod
+  595  mkdir -p infra/django-pro/base
+  596  mkdir -p infra/django-pro/overlays/dev
+  597  mkdir -p infra/django-pro/overlays/preprod
+  598  mkdir -p infra/django-pro/overlays/prod
+  599  mkdir -p infra/dashboard/base
+  600  mkdir -p infra/dashboard/overlays/dev
+  601  mkdir -p infra/dashboard/overlays/preprod
+  602  mkdir -p infra/dashboard/overlays/prod
+  603  cat > infra/ecommerce/base/deployment.yaml << 'EOF'
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-deployment-cv
+  labels:
+    app: ecommerce
+    tier: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ecommerce
+  template:
+    metadata:
+      labels:
+        app: ecommerce
+        tier: frontend
+    spec:
+      containers:
+        - name: ecommerce-stripe
+          image: ecommerce-stripe-cv:1.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5005
+          envFrom:
+            - configMapRef:
+                name: ecommerce-configmap-cv
+            - secretRef:
+                name: ecommerce-secret-cv
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "50m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+EOF
+
+  604  cat > infra/ecommerce/base/service.yaml << 'EOF'
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommerce-service-cv
+  labels:
+    app: ecommerce
+spec:
+  selector:
+    app: ecommerce
+  ports:
+    - port: 5005
+      targetPort: 5005
+      protocol: TCP
+      name: ecommerce-port
+EOF
+
+  605  cat > infra/ecommerce/base/configmap.yaml << 'EOF'
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ecommerce-configmap-cv
+  labels:
+    app: ecommerce
+data:
+  FLASK_APP: "run.py"
+  SERVER_ADDRESS: "http://localhost:5005/"
+EOF
+
+  606  cat > infra/ecommerce/base/kustomization.yaml << 'EOF'
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - deployment.yaml
+  - service.yaml
+  - configmap.yaml
+EOF
+
+  607  cat > infra/ecommerce/overlays/dev/kustomization.yaml << 'EOF'
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: dev
+commonLabels:
+  env: dev
+resources:
+  - ../../base
+patches:
+  - patch-service.yaml
+  - patch-configmap.yaml
+EOF
+
+  608  cat > infra/ecommerce/overlays/dev/patch-service.yaml << 'EOF'
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommerce-service-cv
+spec:
+  type: NodePort
+EOF
+
+  609  cat > infra/ecommerce/overlays/dev/patch-configmap.yaml << 'EOF'
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ecommerce-configmap-cv
+data:
+  DEBUG: "True"
+  FLASK_DEBUG: "True"
+EOF
+
+  610  cat > infra/ecommerce/overlays/preprod/kustomization.yaml << 'EOF'
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: preprod
+commonLabels:
+  env: preprod
+resources:
+  - ../../base
+  - hpa.yaml
+patches:
+  - patch-service.yaml
+  - patch-configmap.yaml
+EOF
+
+  611  cat > infra/ecommerce/overlays/preprod/patch-service.yaml << 'EOF'
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommerce-service-cv
+spec:
+  type: LoadBalancer
+EOF
+
+  612  cat > infra/ecommerce/overlays/preprod/patch-configmap.yaml << 'EOF'
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ecommerce-configmap-cv
+data:
+  DEBUG: "False"
+  FLASK_DEBUG: "False"
+EOF
+
+  613  cat > infra/ecommerce/overlays/preprod/hpa.yaml << 'EOF'
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ecommerce-hpa-cv
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ecommerce-deployment-cv
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60
+EOF
+
+  614  cat > infra/ecommerce/overlays/prod/kustomization.yaml << 'EOF'
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: prod
+commonLabels:
+  env: prod
+resources:
+  - ../../base
+  - hpa.yaml
+patches:
+  - patch-service.yaml
+  - patch-configmap.yaml
+EOF
+
+  615  cp infra/ecommerce/overlays/preprod/patch-service.yaml infra/ecommerce/overlays/prod/patch-service.yaml
+  616  cp infra/ecommerce/overlays/preprod/patch-configmap.yaml infra/ecommerce/overlays/prod/patch-configmap.yaml
+  617  cp infra/ecommerce/overlays/preprod/hpa.yaml infra/ecommerce/overlays/prod/hpa.yaml
+  618  kubectl kustomize infra/ecommerce/overlays/dev
+  619  kubectl kustomize infra/ecommerce/overlays/preprod
+  620  kubectl kustomize infra/ecommerce/overlays/prod
+  621  find infra/ -name "kustomization.yaml" -path "*/overlays/*" -exec sed -i 's/^patches:/patchesStrategicMerge:/g' {} \;
+  622  find infra/ -name "kustomization.yaml" -path "*/overlays/*" -exec sed -i 's/  - patch-/  - /g' {} \;
+  623  cat > infra/ecommerce/overlays/dev/kustomization.yaml << 'EOF'
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: dev
+commonLabels:
+  env: dev
+resources:
+  - ../../base
+patchesStrategicMerge:
+  - patch-service.yaml
+  - patch-configmap.yaml
+EOF
+
+  624  cat > infra/ecommerce/overlays/preprod/kustomization.yaml << 'EOF'
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: preprod
+commonLabels:
+  env: preprod
+resources:
+  - ../../base
+  - hpa.yaml
+patchesStrategicMerge:
+  - patch-service.yaml
+  - patch-configmap.yaml
+EOF
+
+  625  cat > infra/ecommerce/overlays/prod/kustomization.yaml << 'EOF'
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: prod
+commonLabels:
+  env: prod
+resources:
+  - ../../base
+  - hpa.yaml
+patchesStrategicMerge:
+  - patch-service.yaml
+  - patch-configmap.yaml
+EOF
+
+  626  cat > infra/django-pro/overlays/dev/kustomization.yaml << 'EOF'
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: dev
+commonLabels:
+  env: dev
+resources:
+  - ../../base
+patchesStrategicMerge:
+  - patch-service.yaml
+  - patch-configmap.yaml
+EOF
+
+  627  cat > infra/django-pro/overlays/preprod/kustomization.yaml << 'EOF'
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: preprod
+commonLabels:
+  env: preprod
+resources:
+  - ../../base
+  - hpa.yaml
+patchesStrategicMerge:
+  - patch-service.yaml
+  - patch-configmap.yaml
+EOF
+
+  628  cat > infra/django-pro/overlays/prod/kustomization.yaml << 'EOF'
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: prod
+commonLabels:
+  env: prod
+resources:
+  - ../../base
+  - hpa.yaml
+patchesStrategicMerge:
+  - patch-service.yaml
+  - patch-configmap.yaml
+EOF
+
+  629  cat > infra/dashboard/overlays/dev/kustomization.yaml << 'EOF'
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: dev
+commonLabels:
+  env: dev
+resources:
+  - ../../base
+patchesStrategicMerge:
+  - patch-service.yaml
+  - patch-configmap.yaml
+EOF
+
+  630  cat > infra/dashboard/overlays/preprod/kustomization.yaml << 'EOF'
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: preprod
+commonLabels:
+  env: preprod
+resources:
+  - ../../base
+  - hpa.yaml
+patchesStrategicMerge:
+  - patch-service.yaml
+  - patch-configmap.yaml
+EOF
+
+  631  cat > infra/dashboard/overlays/prod/kustomization.yaml << 'EOF'
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: prod
+commonLabels:
+  env: prod
+resources:
+  - ../../base
+  - hpa.yaml
+patchesStrategicMerge:
+  - patch-service.yaml
+  - patch-configmap.yaml
+EOF
+
+  632  kubectl kustomize infra/ecommerce/overlays/dev | head -10
+  633  kubectl kustomize infra/ecommerce/overlays/preprod | head -10
+  634  git add .
+  635  git commit -m "feat: infra as code avec Kustomize - base + overlays par env pour les 3 apps"
+  636  git push
+  637  curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+  638  helm version
+  639  helm repo add infisical https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts/
+  640  helm repo update
+  641  kubectl create namespace infisical
+  642  helm install infisical infisical/infisical-standalone --namespace infisical
+  643  kubectl get pods -n infisical -w
+  644  kubectl describe pod -n infisical -l app.kubernetes.io/name=infisical | grep -A 10 "Events"
+  645  kubectl describe pod -n infisical infisical-infisical-standalone-infisical-68b8f7b65d-cb985 | tail -30
+  646  openssl rand -hex 16
+  647  kubectl create secret generic infisical-secrets -n infisical   --from-literal=ENCRYPTION_KEY=$(openssl rand -hex 16)   --from-literal=AUTH_SECRET=$(openssl rand -hex 32)   --from-literal=SITE_URL="http://localhost"
+  648  kubectl get secrets -n infisical
+  649  kubectl get pods -n infisical -w
+  650  kubectl get pods -n infisical
+  651  kubectl port-forward -n infisical service/infisical-infisical-standalone-infisical 8080:80 --address 0.0.0.0
+  652  kubectl get nodes
+  653  minikube status
+  654  minikube stop
+  655  minikube start --driver=docker --memory=6144 --cpus=2
+  656  helm uninstall infisical -n infisical
+  657  kubectl delete namespace infisical
+  658  eval $(minikube docker-env)
+  659  kubectl get pods -A | grep -E "dev|preprod|prod"
+  660  # 1. Se connecter à Docker Hub
+  661  docker login
+  662  docker tag ecommerce-stripe-cv:1.0 TONUSERNAME/ecommerce-stripe-cv:1.0
+  663  docker tag django-pro-cv:1.0 TONUSERNAME/django-pro-cv:1.0
+  664  docker tag dashboard-cv:1.0 TONUSERNAME/dashboard-cv:1.0
+  665  eval $(minikube docker-env)
+  666  docker login -u clemgrc
+  667  docker tag ecommerce-stripe-cv:1.0 clemgrc/ecommerce-stripe-cv:1.0
+  668  docker tag django-pro-cv:1.0 clemgrc/django-pro-cv:1.0
+  669  docker tag dashboard-cv:1.0 clemgrc/dashboard-cv:1.0
+  670  docker push clemgrc/ecommerce-stripe-cv:1.0
+  671  docker push clemgrc/django-pro-cv:1.0
+  672  docker push clemgrc/dashboard-cv:1.0
+  673  find manifests/ infra/ -name "*.yaml" -exec sed -i 's|image: ecommerce-stripe-cv:|image: clemgrc/ecommerce-stripe-cv:|g' {} \;
+  674  find manifests/ infra/ -name "*.yaml" -exec sed -i 's|image: django-pro-cv:|image: clemgrc/django-pro-cv:|g' {} \;
+  675  find manifests/ infra/ -name "*.yaml" -exec sed -i 's|image: dashboard-cv:|image: clemgrc/dashboard-cv:|g' {} \;
+  676  find manifests/ infra/ -name "*.yaml" -exec sed -i 's|imagePullPolicy: Never|imagePullPolicy: IfNotPresent|g' {} \;
+  677  grep -r "image:" manifests/dev/*-app-*.yaml
+  678  grep -r "imagePullPolicy" manifests/dev/*-app-*.yaml
+  679  kubectl apply -f manifests/dev/
+  680  kubectl apply -f manifests/preprod/
+  681  kubectl apply -f manifests/prod/
+  682  git add .
+  683  git commit -m "feat: images poussees sur Docker Hub clemgrc/ - imagePullPolicy IfNotPresent"
+  684  git push
+  685  git add .
+  686  git commit -m "docs: rapport final complet v3 - ajout section Docker Hub registry"
+  687  git push
